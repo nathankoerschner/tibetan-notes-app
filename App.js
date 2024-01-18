@@ -6,65 +6,23 @@ import NotesContext, { NotesProvider } from "./NotesContext";
 import NewNote from "./NewNote";
 import HomeScreen from "./HomeScreen";
 import auth from "@react-native-firebase/auth";
+import { AuthProvider } from "./AuthContext"; // Import the AuthProvider
+import LoginScreen from "./LoginScreen";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-	const [initializing, setInitializing] = useState(true);
-	const [user, setUser] = useState();
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [error, setError] = useState("");
-
-	function onAuthStateChanged(user) {
-		setUser(user);
-		if (initializing) setInitializing(false);
-	}
-
-	useEffect(() => {
-		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-		return subscriber;
-	}, []);
-
-	const handleLogin = () => {
-		auth()
-			.signInWithEmailAndPassword(email, password)
-			.catch((error) => setError(error.message));
-	};
-
-	if (initializing) return null;
-
-	if (!user) {
-		return (
-			<View style={styles.container}>
-				<Text style={styles.title}>Login</Text>
-				<TextInput
-					style={styles.input}
-					placeholder="Email"
-					value={email}
-					onChangeText={(text) => setEmail(text)}
-				/>
-				<TextInput
-					style={styles.input}
-					placeholder="Password"
-					secureTextEntry
-					value={password}
-					onChangeText={(text) => setPassword(text)}
-				/>
-				<Button title="Login" onPress={handleLogin} />
-				<Text style={styles.error}>{error}</Text>
-			</View>
-		);
-	}
-
 	return (
 		<NavigationContainer>
-			<NotesProvider>
-				<Stack.Navigator initialRouteName="Home">
-					<Stack.Screen name="Home" component={HomeScreen} />
-					<Stack.Screen name="NewNote" component={NewNote} />
-				</Stack.Navigator>
-			</NotesProvider>
+			<AuthProvider>
+				<NotesProvider>
+					<Stack.Navigator initialRouteName="Login">
+						<Stack.Screen name="Login" component={LoginScreen} />
+						<Stack.Screen name="Home" component={HomeScreen} />
+						<Stack.Screen name="NewNote" component={NewNote} />
+					</Stack.Navigator>
+				</NotesProvider>
+			</AuthProvider>
 		</NavigationContainer>
 	);
 }
