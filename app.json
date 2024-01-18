@@ -18,11 +18,12 @@
 			"googleServicesFile": "./GoogleService-Info.plist"
 		},
 		"android": {
+			"googleServicesFile": "./google-services.json",
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/adaptive-icon.png",
-				"backgroundColor": "#ffffff",
-				"googleServicesFile": "./google-services.json"
-			}
+				"backgroundColor": "#ffffff"
+			},
+			"package": "com.nathankoerschner.tibetannotesapp"
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"
