@@ -1,29 +1,62 @@
-// TODO:
-// Use a UI library to get the various components
-// Use a library to make sure that the storage of the notes persists
-// Include the headings of each of the Alphabetical sections
-
-import React, { useState, useContext } from "react";
-
+import React, { useState, useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import {
-	StatusBar,
-	StyleSheet,
-	Text,
-	View,
-	Button,
-	Alert,
-	FlatList,
-	TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import NotesContext, { NotesProvider } from "./NotesContext"; // Import NotesContext and NotesProvider
-import NewNote from "./NewNote"; // Adjust the path as per your file structure
-import HomeScreen from "./HomeScreen"; // Adjust the path as per your file structure
+import NotesContext, { NotesProvider } from "./NotesContext";
+import NewNote from "./NewNote";
+import HomeScreen from "./HomeScreen";
+import auth from "@react-native-firebase/auth";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+	const [initializing, setInitializing] = useState(true);
+	const [user, setUser] = useState();
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
+
+	function onAuthStateChanged(user) {
+		setUser(user);
+		if (initializing) setInitializing(false);
+	}
+
+	useEffect(() => {
+		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+		return subscriber;
+	}, []);
+
+	const handleLogin = () => {
+		auth()
+			.signInWithEmailAndPassword(email, password)
+			.catch((error) => setError(error.message));
+	};
+
+	if (initializing) return null;
+
+	if (!user) {
+		return (
+			<View style={styles.container}>
+				<Text style={styles.title}>Login</Text>
+				<TextInput
+					style={styles.input}
+					placeholder="Email"
+					value={email}
+					onChangeText={(text) => setEmail(text)}
+				/>
+				<TextInput
+					style={styles.input}
+					placeholder="Password"
+					secureTextEntry
+					value={password}
+					onChangeText={(text) => setPassword(text)}
+				/>
+				<Button title="Login" onPress={handleLogin} />
+				<Text style={styles.error}>{error}</Text>
+			</View>
+		);
+	}
+
 	return (
 		<NavigationContainer>
 			<NotesProvider>
@@ -35,6 +68,7 @@ export default function App() {
 		</NavigationContainer>
 	);
 }
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -61,5 +95,29 @@ const styles = StyleSheet.create({
 		margin: 10,
 		padding: 10,
 		backgroundColor: "#f9f9f9",
+	},
+	container: {
+		flex: 1,
+		backgroundColor: "white",
+		alignItems: "center",
+		justifyContent: "center",
+		paddingHorizontal: 20,
+	},
+	title: {
+		fontSize: 24,
+		fontWeight: "bold",
+		marginBottom: 20,
+	},
+	input: {
+		width: "100%",
+		height: 40,
+		borderColor: "gray",
+		borderWidth: 1,
+		marginBottom: 10,
+		paddingHorizontal: 10,
+	},
+	error: {
+		color: "red",
+		marginTop: 10,
 	},
 });
