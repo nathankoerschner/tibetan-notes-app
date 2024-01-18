@@ -1,0 +1,77 @@
+import React, { useContext } from "react";
+import {
+	StyleSheet,
+	View,
+	Text,
+	TouchableOpacity,
+	FlatList,
+} from "react-native";
+import NotesContext from "./NotesContext"; // Make sure to import the context
+
+function HomeScreen({ navigation }) {
+	const { notes } = useContext(NotesContext);
+
+	const renderNote = ({ item }) => (
+		<View style={styles.noteContainer}>
+			<Text style={styles.noteTitle}>{item.title}</Text>
+			<Text style={styles.noteBody}>{item.body}</Text>
+		</View>
+	);
+
+	return (
+		<View style={styles.container}>
+			<FlatList
+				data={notes}
+				renderItem={renderNote}
+				keyExtractor={(item, index) => index.toString()}
+			/>
+			<TouchableOpacity
+				style={styles.addButton}
+				onPress={() => navigation.navigate("NewNote")}
+			>
+				<Text style={styles.addButtonText}>+</Text>
+			</TouchableOpacity>
+		</View>
+	);
+}
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: "white",
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	noteContainer: {
+		margin: 10,
+		padding: 10,
+		backgroundColor: "#f9f9f9",
+		borderRadius: 5,
+		width: "90%", // Adjust as needed
+	},
+	noteTitle: {
+		fontWeight: "bold",
+		fontSize: 16,
+		marginBottom: 5,
+	},
+	noteBody: {
+		fontSize: 14,
+	},
+	addButton: {
+		backgroundColor: "blue",
+		width: 60,
+		height: 60,
+		borderRadius: 30,
+		alignItems: "center",
+		justifyContent: "center",
+		position: "absolute",
+		bottom: 20,
+		right: 20,
+	},
+	addButtonText: {
+		color: "white",
+		fontSize: 30,
+	},
+});
+
+export default HomeScreen;
