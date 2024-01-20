@@ -7,6 +7,7 @@ import {
 	Text,
 } from "react-native";
 import NotesContext from "./NotesContext"; // Make sure to import the context
+import firestore from "@react-native-firebase/firestore";
 
 function NewNote({ navigation }) {
 	const { notes, setNotes } = useContext(NotesContext);
@@ -18,6 +19,11 @@ function NewNote({ navigation }) {
 			// Optionally handle the case of empty title or body
 			return;
 		}
+		firestore().collection("Users").doc("User1").collection("Notes").add({
+			title: noteTitle,
+			body: noteBody,
+		});
+
 		const newNote = { title: noteTitle, body: noteBody };
 		setNotes([...notes, newNote]);
 		setNoteTitle(""); // Clear the title field

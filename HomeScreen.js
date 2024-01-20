@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
 	StyleSheet,
 	View,
@@ -7,9 +7,30 @@ import {
 	FlatList,
 } from "react-native";
 import NotesContext from "./NotesContext"; // Make sure to import the context
+import firestore from "@react-native-firebase/firestore";
 
 function HomeScreen({ navigation }) {
 	const { notes } = useContext(NotesContext);
+	const [library, setLibrary] = useState(["note1", "note2", "note3"]);
+
+	// Update the library state with the collected notes
+	useEffect(() => {
+		const subscriber = firestore()
+			.collection("Users")
+			.doc("User1")
+			.collection("Notes")
+			.onSnapshot((querySnapshot) => {
+				const notesArray = [];
+				querySnapshot.forEach((documentSnapshot) => {
+					const noteData = documentSnapshot.data();
+					notesArray.push(noteData);
+				});
+				console.log(notesArray);
+				setLibrary(notesArray);
+			});
+
+		return () => subscriber(); // Unsubscribe when component unmounts
+	}, []); // Empty dependency array to ensure this effect runs only once
 
 	const renderNote = ({ item }) => (
 		<View style={styles.noteContainer}>
@@ -20,8 +41,9 @@ function HomeScreen({ navigation }) {
 
 	return (
 		<View style={styles.container}>
+			<Text>Home Screen</Text>
 			<FlatList
-				data={notes}
+				data={library}
 				renderItem={renderNote}
 				keyExtractor={(item, index) => index.toString()}
 			/>
