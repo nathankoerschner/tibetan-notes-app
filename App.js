@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import NewNote from "./NewNote";
-import HomeScreen from "./HomeScreen";
+import LibraryScreen from "./LibraryScreen";
 import { AuthProvider } from "./AuthContext";
 import LoginScreen from "./LoginScreen";
 
@@ -15,7 +15,7 @@ export default function App() {
 			<AuthProvider>
 				<Stack.Navigator initialRouteName="Login">
 					<Stack.Screen name="Login" component={LoginScreen} />
-					<Stack.Screen name="Home" component={HomeScreen} />
+					<Stack.Screen name="Library" component={LibraryScreen} />
 					<Stack.Screen name="NewNote" component={NewNote} />
 				</Stack.Navigator>
 			</AuthProvider>

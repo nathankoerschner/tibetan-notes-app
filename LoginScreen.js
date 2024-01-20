@@ -30,7 +30,7 @@ export default function LoginScreen({ navigation }) {
 					<Text>Welcome, {user.email}</Text>
 					<Button
 						title="Go To Library"
-						onPress={() => navigation.navigate("Home")}
+						onPress={() => navigation.navigate("Library")}
 					/>
 					<Button title="Logout" onPress={handleLogout} />
 				</View>

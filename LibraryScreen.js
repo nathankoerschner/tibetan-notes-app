@@ -11,7 +11,7 @@ import firestore from "@react-native-firebase/firestore";
 import { AuthProvider } from "./AuthContext";
 import { useAuth } from "./AuthContext";
 
-function HomeScreen({ navigation }) {
+function LibraryScreen({ navigation }) {
 	const { user, logout } = useAuth();
 
 	if (!user) {
@@ -102,4 +102,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default HomeScreen;
+export default LibraryScreen;

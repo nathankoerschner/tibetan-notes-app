@@ -31,7 +31,7 @@ function NewNote({ navigation }) {
 
 		setNoteTitle(""); // Clear the title field
 		setNoteBody(""); // Clear the body field
-		navigation.goBack(); // Navigate back to the Home screen
+		navigation.goBack(); // Navigate back to the Library screen
 	};
 
 	return (
