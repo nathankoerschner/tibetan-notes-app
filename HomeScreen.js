@@ -6,11 +6,10 @@ import {
 	TouchableOpacity,
 	FlatList,
 } from "react-native";
-import NotesContext from "./NotesContext"; // Make sure to import the context
+
 import firestore from "@react-native-firebase/firestore";
 
 function HomeScreen({ navigation }) {
-	const { notes } = useContext(NotesContext);
 	const [library, setLibrary] = useState(["note1", "note2", "note3"]);
 
 	// Update the library state with the collected notes

@@ -6,11 +6,9 @@ import {
 	TouchableOpacity,
 	Text,
 } from "react-native";
-import NotesContext from "./NotesContext"; // Make sure to import the context
 import firestore from "@react-native-firebase/firestore";
 
 function NewNote({ navigation }) {
-	const { notes, setNotes } = useContext(NotesContext);
 	const [noteTitle, setNoteTitle] = useState("");
 	const [noteBody, setNoteBody] = useState("");
 
@@ -25,7 +23,6 @@ function NewNote({ navigation }) {
 		});
 
 		const newNote = { title: noteTitle, body: noteBody };
-		setNotes([...notes, newNote]);
 		setNoteTitle(""); // Clear the title field
 		setNoteBody(""); // Clear the body field
 		navigation.goBack(); // Navigate back to the Home screen

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import NotesContext, { NotesProvider } from "./NotesContext";
 import NewNote from "./NewNote";
 import HomeScreen from "./HomeScreen";
 import auth from "@react-native-firebase/auth";
@@ -15,13 +14,11 @@ export default function App() {
 	return (
 		<NavigationContainer>
 			<AuthProvider>
-				<NotesProvider>
-					<Stack.Navigator initialRouteName="Login">
-						<Stack.Screen name="Login" component={LoginScreen} />
-						<Stack.Screen name="Home" component={HomeScreen} />
-						<Stack.Screen name="NewNote" component={NewNote} />
-					</Stack.Navigator>
-				</NotesProvider>
+				<Stack.Navigator initialRouteName="Login">
+					<Stack.Screen name="Login" component={LoginScreen} />
+					<Stack.Screen name="Home" component={HomeScreen} />
+					<Stack.Screen name="NewNote" component={NewNote} />
+				</Stack.Navigator>
 			</AuthProvider>
 		</NavigationContainer>
 	);
