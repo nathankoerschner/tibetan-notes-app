@@ -4,8 +4,7 @@ import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import NewNote from "./NewNote";
 import HomeScreen from "./HomeScreen";
-import auth from "@react-native-firebase/auth";
-import { AuthProvider } from "./AuthContext"; // Import the AuthProvider
+import { AuthProvider } from "./AuthContext";
 import LoginScreen from "./LoginScreen";
 
 const Stack = createNativeStackNavigator();

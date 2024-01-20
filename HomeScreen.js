@@ -8,15 +8,23 @@ import {
 } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
+import { AuthProvider } from "./AuthContext";
+import { useAuth } from "./AuthContext";
 
 function HomeScreen({ navigation }) {
-	const [library, setLibrary] = useState(["note1", "note2", "note3"]);
+	const { user, logout } = useAuth();
+
+	if (!user) {
+		return null;
+	}
+
+	const [library, setLibrary] = useState([]);
 
 	// Update the library state with the collected notes
 	useEffect(() => {
 		const subscriber = firestore()
 			.collection("Users")
-			.doc("User1")
+			.doc(user.uid)
 			.collection("Notes")
 			.onSnapshot((querySnapshot) => {
 				const notesArray = [];

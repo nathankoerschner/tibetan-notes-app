@@ -7,8 +7,15 @@ import {
 	Text,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
+import { useAuth } from "./AuthContext";
 
 function NewNote({ navigation }) {
+	const { user, logout } = useAuth();
+
+	if (!user) {
+		return null;
+	}
+
 	const [noteTitle, setNoteTitle] = useState("");
 	const [noteBody, setNoteBody] = useState("");
 
@@ -17,7 +24,7 @@ function NewNote({ navigation }) {
 			// Optionally handle the case of empty title or body
 			return;
 		}
-		firestore().collection("Users").doc("User1").collection("Notes").add({
+		firestore().collection("Users").doc(user.uid).collection("Notes").add({
 			title: noteTitle,
 			body: noteBody,
 		});
