@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	StyleSheet,
 	View,
@@ -24,7 +24,6 @@ function HomeScreen({ navigation }) {
 					const noteData = documentSnapshot.data();
 					notesArray.push(noteData);
 				});
-				console.log(notesArray);
 				setLibrary(notesArray);
 			});
 
@@ -40,7 +39,6 @@ function HomeScreen({ navigation }) {
 
 	return (
 		<View style={styles.container}>
-			<Text>Home Screen</Text>
 			<FlatList
 				data={library}
 				renderItem={renderNote}
@@ -62,6 +60,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "white",
 		alignItems: "center",
 		justifyContent: "center",
+		width: "100%",
 	},
 	noteContainer: {
 		margin: 10,

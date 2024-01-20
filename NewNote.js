@@ -22,7 +22,6 @@ function NewNote({ navigation }) {
 			body: noteBody,
 		});
 
-		const newNote = { title: noteTitle, body: noteBody };
 		setNoteTitle(""); // Clear the title field
 		setNoteBody(""); // Clear the body field
 		navigation.goBack(); // Navigate back to the Home screen
