@@ -8,8 +8,9 @@ import {
 } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
-import { AuthProvider } from "./AuthContext";
 import { useAuth } from "./AuthContext";
+// Use require instead of import
+import tibetanSort from "./tibetan-sort-js";
 
 function LibraryScreen({ navigation }) {
 	const { user, logout } = useAuth();
@@ -32,6 +33,9 @@ function LibraryScreen({ navigation }) {
 					const noteData = documentSnapshot.data();
 					notesArray.push(noteData);
 				});
+				// Sort the notes by their title using the Tibetan sorting function
+				notesArray.sort((a, b) => tibetanSort.compare(a.title, b.title));
+
 				setLibrary(notesArray);
 			});
 
