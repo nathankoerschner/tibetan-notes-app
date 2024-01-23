@@ -9,15 +9,17 @@ import {
 import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "./AuthContext";
 
-function NewNote({ navigation }) {
+function NewNote({ navigation, route }) {
+	const existingNote = route.params?.note; // Get passed note, if any
+
+	const [noteTitle, setNoteTitle] = useState(existingNote?.title || "");
+	const [noteBody, setNoteBody] = useState(existingNote?.body || "");
+	const [isEditMode, setIsEditMode] = useState(!!existingNote);
 	const { user, logout } = useAuth();
 
 	if (!user) {
 		return null;
 	}
-
-	const [noteTitle, setNoteTitle] = useState("");
-	const [noteBody, setNoteBody] = useState("");
 
 	const addNote = () => {
 		if (noteTitle.trim().length === 0 || noteBody.trim().length === 0) {
@@ -25,13 +27,62 @@ function NewNote({ navigation }) {
 			return;
 		}
 		firestore().collection("Users").doc(user.uid).collection("Notes").add({
-			title: noteTitle,
+			title: noteTitle.trim(),
 			body: noteBody,
 		});
 
 		setNoteTitle(""); // Clear the title field
 		setNoteBody(""); // Clear the body field
 		navigation.goBack(); // Navigate back to the Library screen
+	};
+
+	const saveNote = () => {
+		if (noteTitle.trim().length === 0 || noteBody.trim().length === 0) {
+			// Optionally handle the case of empty title or body
+			return;
+		}
+
+		const collectionRef = firestore()
+			.collection("Users")
+			.doc(user.uid)
+			.collection("Notes");
+
+		if (existingNote) {
+			// Update existing note
+			collectionRef.doc(existingNote.id).update({
+				title: noteTitle.trim(),
+				body: noteBody,
+			});
+		} else {
+			// Add new note
+			collectionRef.add({
+				title: noteTitle.trim(),
+				body: noteBody,
+			});
+		}
+
+		setNoteTitle("");
+		setNoteBody("");
+		navigation.goBack();
+	};
+
+	const deleteNote = () => {
+		// Only proceed if in edit mode and a note ID is available
+		if (isEditMode && existingNote?.id) {
+			firestore()
+				.collection("Users")
+				.doc(user.uid)
+				.collection("Notes")
+				.doc(existingNote.id)
+				.delete()
+				.then(() => {
+					navigation.goBack(); // Navigate back after deletion
+				})
+				.catch((error) => {
+					console.error("Error deleting note: ", error);
+					// Optionally handle the error, e.g., show an alert
+				});
+		}
 	};
 
 	return (
@@ -53,8 +104,15 @@ function NewNote({ navigation }) {
 				onChangeText={setNoteBody}
 			/>
 			<TouchableOpacity style={styles.addButton} onPress={addNote}>
-				<Text style={styles.addButtonText}>Add Note</Text>
+				<Text style={styles.addButtonText}>
+					{isEditMode ? "Save Note" : "Add Note"}
+				</Text>
 			</TouchableOpacity>
+			{isEditMode && (
+				<TouchableOpacity style={styles.deleteButton} onPress={deleteNote}>
+					<Text style={styles.deleteButtonText}>Delete Note</Text>
+				</TouchableOpacity>
+			)}
 		</View>
 	);
 }
@@ -95,6 +153,18 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	addButtonText: {
+		color: "white",
+		fontSize: 18,
+	},
+	deleteButton: {
+		marginTop: 10,
+		width: "90%",
+		padding: 15,
+		backgroundColor: "#cc0000",
+		borderRadius: 10,
+		alignItems: "center",
+	},
+	deleteButtonText: {
 		color: "white",
 		fontSize: 18,
 	},

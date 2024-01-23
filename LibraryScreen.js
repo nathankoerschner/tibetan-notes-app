@@ -31,7 +31,10 @@ function LibraryScreen({ navigation }) {
 				const notesArray = [];
 				querySnapshot.forEach((documentSnapshot) => {
 					const noteData = documentSnapshot.data();
-					notesArray.push(noteData);
+					notesArray.push({
+						...noteData,
+						id: documentSnapshot.id, // Include the document ID
+					});
 				});
 				// Sort the notes by their title using the Tibetan sorting function
 				notesArray.sort((a, b) => tibetanSort.compare(a.title, b.title));
@@ -43,12 +46,14 @@ function LibraryScreen({ navigation }) {
 	}, []); // Empty dependency array to ensure this effect runs only once
 
 	const renderNote = ({ item }) => (
-		<View style={styles.noteContainer}>
+		<TouchableOpacity
+			style={styles.noteContainer}
+			onPress={() => navigation.navigate("NewNote", { note: item })}
+		>
 			<Text style={styles.noteTitle}>{item.title}</Text>
 			<Text style={styles.noteBody}>{item.body}</Text>
-		</View>
+		</TouchableOpacity>
 	);
-
 	return (
 		<View style={styles.container}>
 			<FlatList
