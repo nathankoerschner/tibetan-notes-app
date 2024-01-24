@@ -82,6 +82,8 @@ const styles = StyleSheet.create({
 		paddingTop: 20, // Add padding at the top
 	},
 	noteContainer: {
+		minWidth: "80%", // Set minimum width for the note container
+		maxWidth: "80%", // Set maximum width for the note container
 		margin: 10,
 		padding: 10,
 		backgroundColor: "#fff", // Light background for notes
@@ -95,11 +97,11 @@ const styles = StyleSheet.create({
 	},
 	noteTitle: {
 		fontWeight: "bold",
-		fontSize: 16,
+		fontSize: 20,
 		marginBottom: 5,
 	},
 	noteBody: {
-		fontSize: 14,
+		fontSize: 16,
 	},
 	addButton: {
 		backgroundColor: "#007AFF", // Consistent button color
