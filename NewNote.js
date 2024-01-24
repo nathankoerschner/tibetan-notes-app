@@ -84,9 +84,15 @@ function NewNote({ navigation, route }) {
 				});
 		}
 	};
-
 	return (
 		<View style={styles.container}>
+			{isEditMode && (
+				<View style={styles.header}>
+					<TouchableOpacity style={styles.deleteButton} onPress={deleteNote}>
+						<Text style={styles.deleteButtonText}>Delete</Text>
+					</TouchableOpacity>
+				</View>
+			)}
 			<TextInput
 				style={styles.titleInput}
 				placeholder="Note Title"
@@ -103,16 +109,14 @@ function NewNote({ navigation, route }) {
 				numberOfLines={4}
 				onChangeText={setNoteBody}
 			/>
-			<TouchableOpacity style={styles.addButton} onPress={addNote}>
-				<Text style={styles.addButtonText}>
+			<TouchableOpacity
+				style={styles.button}
+				onPress={isEditMode ? saveNote : addNote}
+			>
+				<Text style={styles.buttonText}>
 					{isEditMode ? "Save Note" : "Add Note"}
 				</Text>
 			</TouchableOpacity>
-			{isEditMode && (
-				<TouchableOpacity style={styles.deleteButton} onPress={deleteNote}>
-					<Text style={styles.deleteButtonText}>Delete Note</Text>
-				</TouchableOpacity>
-			)}
 		</View>
 	);
 }
@@ -120,53 +124,61 @@ function NewNote({ navigation, route }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#f4f4f4",
+		backgroundColor: "#f2f2f7",
 		alignItems: "center",
+		justifyContent: "flex-start",
 		paddingTop: 20,
+		width: "100%",
 	},
 	titleInput: {
 		width: "90%",
-		padding: 15,
-		marginBottom: 10,
+		height: 50,
+		borderColor: "#007AFF",
 		borderWidth: 1,
-		borderColor: "#ccc",
-		borderRadius: 10,
-		backgroundColor: "white",
+		borderRadius: 5,
+		marginBottom: 15,
+		paddingHorizontal: 10,
+		backgroundColor: "#fff",
 		fontSize: 16,
 	},
 	bodyInput: {
 		width: "90%",
-		padding: 15,
-		marginBottom: 20,
+		height: 150, // Larger height for body input
+		borderColor: "#007AFF",
 		borderWidth: 1,
-		borderColor: "#ccc",
-		borderRadius: 10,
-		backgroundColor: "white",
+		borderRadius: 5,
+		marginBottom: 15,
+		paddingHorizontal: 10,
+		backgroundColor: "#fff",
 		fontSize: 16,
-		textAlignVertical: "top", // For Android multiline text input
+		textAlignVertical: "top",
 	},
-	addButton: {
+	button: {
 		width: "90%",
 		padding: 15,
-		backgroundColor: "#007bff",
-		borderRadius: 10,
+		backgroundColor: "#007AFF", // Consistent button color
+		borderRadius: 5,
 		alignItems: "center",
+		justifyContent: "center",
+		marginBottom: 10,
 	},
-	addButtonText: {
+	buttonText: {
 		color: "white",
-		fontSize: 18,
+		fontSize: 16,
+	},
+
+	header: {
+		width: "90%",
+		alignSelf: "center",
+		marginBottom: 10,
 	},
 	deleteButton: {
-		marginTop: 10,
-		width: "90%",
-		padding: 15,
-		backgroundColor: "#cc0000",
-		borderRadius: 10,
-		alignItems: "center",
+		alignSelf: "flex-end",
+		padding: 5,
 	},
 	deleteButtonText: {
-		color: "white",
-		fontSize: 18,
+		color: "#CC0000",
+		fontSize: 14,
 	},
 });
 

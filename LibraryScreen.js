@@ -54,6 +54,7 @@ function LibraryScreen({ navigation }) {
 			<Text style={styles.noteBody}>{item.body}</Text>
 		</TouchableOpacity>
 	);
+
 	return (
 		<View style={styles.container}>
 			<FlatList
@@ -74,17 +75,23 @@ function LibraryScreen({ navigation }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "white",
+		backgroundColor: "#f2f2f7", // Consistent background color
 		alignItems: "center",
-		justifyContent: "center",
+		justifyContent: "flex-start", // Adjust alignment
 		width: "100%",
+		paddingTop: 20, // Add padding at the top
 	},
 	noteContainer: {
 		margin: 10,
 		padding: 10,
-		backgroundColor: "#f9f9f9",
+		backgroundColor: "#fff", // Light background for notes
 		borderRadius: 5,
-		width: "90%", // Adjust as needed
+		width: "90%",
+		shadowColor: "#000", // Add shadow for a subtle depth
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
 	},
 	noteTitle: {
 		fontWeight: "bold",
@@ -95,7 +102,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 	},
 	addButton: {
-		backgroundColor: "blue",
+		backgroundColor: "#007AFF", // Consistent button color
 		width: 60,
 		height: 60,
 		borderRadius: 30,

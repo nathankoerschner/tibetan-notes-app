@@ -57,37 +57,10 @@ export default function LoginScreen({ navigation }) {
 	);
 }
 
-// ... rest of your code
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "white",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	addButton: {
-		backgroundColor: "blue",
-		width: 60,
-		height: 60,
-		borderRadius: 30,
-		alignItems: "center",
-		justifyContent: "center",
-		position: "absolute",
-		bottom: 20,
-		right: 20,
-	},
-	addButtonText: {
-		color: "white",
-		fontSize: 30,
-	},
-	note: {
-		margin: 10,
-		padding: 10,
-		backgroundColor: "#f9f9f9",
-	},
-	container: {
-		flex: 1,
-		backgroundColor: "white",
+		backgroundColor: "#f2f2f7", // Updated background color
 		alignItems: "center",
 		justifyContent: "center",
 		paddingHorizontal: 20,
@@ -96,17 +69,28 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: "bold",
 		marginBottom: 20,
+		color: "#333", // Updated color for title
 	},
 	input: {
+		minWidth: 250, // Set minimum width for the input
 		width: "100%",
 		height: 40,
-		borderColor: "gray",
+		borderColor: "#007AFF", // Updated border color
 		borderWidth: 1,
-		marginBottom: 10,
+		borderRadius: 5, // Rounded corners for inputs
+		marginBottom: 15,
 		paddingHorizontal: 10,
 	},
-	error: {
-		color: "red",
-		marginTop: 10,
+	button: {
+		backgroundColor: "#007AFF", // Updated button color
+		padding: 10,
+		borderRadius: 5, // Rounded corners for button
+		alignItems: "center",
+		justifyContent: "center",
+		marginBottom: 10,
+	},
+	buttonText: {
+		color: "white",
+		fontSize: 16,
 	},
 });
