@@ -3,6 +3,11 @@ module.exports = {
 		name: "tibetan-notes-app",
 		slug: "tibetan-notes-app",
 		version: "1.0.0",
+		build: {
+			preview: {
+				distribution: "internal",
+			},
+		},
 		orientation: "portrait",
 		icon: "./assets/icon.png",
 		userInterfaceStyle: "light",
