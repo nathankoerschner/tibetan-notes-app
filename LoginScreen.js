@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import {
+	StyleSheet,
+	Text,
+	View,
+	TextInput,
+	Button,
+	KeyboardAvoidingView,
+	Platform,
+} from "react-native";
 import { useAuth } from "./AuthContext"; // Import the useAuth hook
 
 export default function LoginScreen({ navigation }) {
@@ -24,46 +32,54 @@ export default function LoginScreen({ navigation }) {
 	};
 
 	return (
-		<View style={styles.container}>
-			{user ? (
-				<View>
-					<Text>Welcome, {user.email}</Text>
-					<Button
-						title="Go To Library"
-						onPress={() => navigation.navigate("Library")}
-					/>
-					<Button title="Logout" onPress={handleLogout} />
-				</View>
-			) : (
-				<View>
-					<Text style={styles.title}>Login</Text>
-					<TextInput
-						style={styles.input}
-						placeholder="Email"
-						value={email}
-						onChangeText={(text) => setEmail(text)}
-					/>
-					<TextInput
-						style={styles.input}
-						placeholder="Password"
-						secureTextEntry
-						value={password}
-						onChangeText={(text) => setPassword(text)}
-					/>
-					<Button title="Login" onPress={handleLogin} />
-				</View>
-			)}
-		</View>
+		<KeyboardAvoidingView
+			style={styles.container}
+			behavior={Platform.OS === "ios" ? "padding" : "height"}
+		>
+			<View style={styles.innerContainer}>
+				{user ? (
+					<View>
+						<Text>Welcome, {user.email}</Text>
+						<Button
+							title="Go To Library"
+							onPress={() => navigation.navigate("Library")}
+						/>
+						<Button title="Logout" onPress={handleLogout} />
+					</View>
+				) : (
+					<View>
+						<Text style={styles.title}>Login</Text>
+						<TextInput
+							style={styles.input}
+							placeholder="Email"
+							value={email}
+							onChangeText={(text) => setEmail(text)}
+						/>
+						<TextInput
+							style={styles.input}
+							placeholder="Password"
+							secureTextEntry
+							value={password}
+							onChangeText={(text) => setPassword(text)}
+						/>
+						<Button title="Login" onPress={handleLogin} />
+					</View>
+				)}
+			</View>
+		</KeyboardAvoidingView>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#f2f2f7", // Updated background color
+		backgroundColor: "#f2f2f7",
+	},
+	innerContainer: {
 		alignItems: "center",
 		justifyContent: "center",
 		paddingHorizontal: 20,
+		flex: 1,
 	},
 	title: {
 		fontSize: 24,
