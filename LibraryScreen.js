@@ -5,6 +5,7 @@ import {
 	Text,
 	TouchableOpacity,
 	FlatList,
+	Modal,
 } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
@@ -14,6 +15,7 @@ import tibetanSort from "./tibetan-sort-js";
 
 function LibraryScreen({ navigation }) {
 	const { user, logout } = useAuth();
+	const [isModalVisible, setModalVisible] = useState(false);
 
 	if (!user) {
 		return null;
@@ -45,6 +47,19 @@ function LibraryScreen({ navigation }) {
 		return () => subscriber(); // Unsubscribe when component unmounts
 	}, []); // Empty dependency array to ensure this effect runs only once
 
+	const tibetanCharacters = "ཀཁགངཅཆཇཉཏཐདནཔཕབམཙཚཛཝཞཟའཡརལཤསཧཨ";
+	const halfLength = Math.ceil(tibetanCharacters.length / 2);
+
+	const firstRowChars = tibetanCharacters.slice(0, halfLength).split("");
+	const secondRowChars = tibetanCharacters.slice(halfLength).split("");
+
+	const renderCharButtons = (chars) =>
+		chars.map((char, index) => (
+			<TouchableOpacity key={index} style={styles.charButton}>
+				<Text style={styles.charButtonText}>{char}</Text>
+			</TouchableOpacity>
+		));
+
 	const renderNote = ({ item }) => (
 		<TouchableOpacity
 			style={styles.noteContainer}
@@ -58,16 +73,49 @@ function LibraryScreen({ navigation }) {
 	return (
 		<View style={styles.container}>
 			<FlatList
+				contentContainerStyle={styles.flatList}
 				data={library}
 				renderItem={renderNote}
 				keyExtractor={(item, index) => index.toString()}
 			/>
-			<TouchableOpacity
-				style={styles.addButton}
-				onPress={() => navigation.navigate("NewNote")}
+			<View style={styles.buttonContainer}>
+				<TouchableOpacity
+					style={styles.modalTriggerButton}
+					onPress={() => setModalVisible(true)}
+				>
+					<Text style={styles.modalTriggerButtonText}>ཀ་ཁ་ག་༉</Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity
+					style={styles.addButton}
+					onPress={() => navigation.navigate("NewNote")}
+				>
+					<Text style={styles.addButtonText}>+</Text>
+				</TouchableOpacity>
+			</View>
+			<Modal
+				transparent={true}
+				visible={isModalVisible}
+				onRequestClose={() => setModalVisible(false)}
 			>
-				<Text style={styles.addButtonText}>+</Text>
-			</TouchableOpacity>
+				<TouchableOpacity
+					style={styles.modalOverlay}
+					activeOpacity={1}
+					onPressOut={() => setModalVisible(false)}
+				>
+					<View style={styles.modalView} onStartShouldSetResponder={() => true}>
+						{/* Modal Content */}
+						<View style={styles.charBox}>
+							<View style={styles.charRow}>
+								{renderCharButtons(firstRowChars)}
+							</View>
+							<View style={styles.charRow}>
+								{renderCharButtons(secondRowChars)}
+							</View>
+						</View>
+					</View>
+				</TouchableOpacity>
+			</Modal>
 		</View>
 	);
 }
@@ -75,21 +123,35 @@ function LibraryScreen({ navigation }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#f2f2f7", // Consistent background color
-		alignItems: "center",
-		justifyContent: "flex-start", // Adjust alignment
+		backgroundColor: "#f2f2f7",
+		justifyContent: "flex-start",
 		width: "100%",
-		paddingTop: 20, // Add padding at the top
+		alignItems: "stretch", // Ensures children can fill the width
+	},
+	flatList: {
+		borderWidth: 1,
+		padding: 10, // Example padding
+		paddingVertical: 50, // Example padding
+		margin: 40,
+		alignItems: "center", // Center items in the list
+		backgroundColor: "#d3d3d3", // Example background color
+		borderColor: "#808080", // Example border color
+		borderWidth: 1, // Example border width
+		borderRadius: 5,
+		shadowColor: "#808080",
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
 	},
 	noteContainer: {
-		minWidth: "80%", // Set minimum width for the note container
-		maxWidth: "80%", // Set maximum width for the note container
+		width: "90%", // Specific width
 		margin: 10,
+		minWidth: "90%", // Minimum width
 		padding: 10,
-		backgroundColor: "#fff", // Light background for notes
+		backgroundColor: "#fff",
 		borderRadius: 5,
-		width: "90%",
-		shadowColor: "#000", // Add shadow for a subtle depth
+		shadowColor: "#000",
 		shadowOffset: { width: 0, height: 2 },
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
@@ -102,6 +164,27 @@ const styles = StyleSheet.create({
 	},
 	noteBody: {
 		fontSize: 16,
+	},
+	buttonContainer: {
+		flexDirection: "row",
+		justifyContent: "flex-end",
+		alignItems: "center",
+		padding: 10,
+	},
+	modalTriggerButton: {
+		backgroundColor: "#007AFF", // Lighter blue background
+		borderRadius: 20,
+		paddingVertical: 10,
+		height: 60,
+		paddingHorizontal: 15,
+		marginRight: 10,
+		position: "absolute", // Positioning absolutely
+		bottom: 20, // Same vertical position as addButton
+		right: 90, // Adjust this value as needed to position the button
+	},
+	modalTriggerButtonText: {
+		color: "white",
+		fontSize: 28,
 	},
 	addButton: {
 		backgroundColor: "#007AFF", // Consistent button color
@@ -117,6 +200,45 @@ const styles = StyleSheet.create({
 	addButtonText: {
 		color: "white",
 		fontSize: 30,
+	},
+	charBox: {
+		backgroundColor: "#f0f0f0", // Gray background
+		borderRadius: 10,
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+		padding: 10,
+		marginHorizontal: 10, // Add horizontal margin
+	},
+	charRow: {
+		flexDirection: "row",
+		justifyContent: "center",
+		paddingVertical: 5,
+	},
+	charButton: {
+		margin: 5,
+		backgroundColor: "#007AFF",
+		borderRadius: 5,
+		padding: 10,
+	},
+	charButtonText: {
+		color: "white",
+		fontSize: 18,
+	},
+	modalOverlay: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
+	},
+	modalView: {
+		backgroundColor: "white", // Non-transparent background for modal content
+		borderRadius: 10,
+		padding: 10,
+		elevation: 5,
+		// Add other styling as needed
 	},
 });
 
