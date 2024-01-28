@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
 	StyleSheet,
 	View,
@@ -23,6 +23,21 @@ function LibraryScreen({ navigation }) {
 	}
 
 	const [library, setLibrary] = useState([]);
+	const groupNotesByInitialCharacter = (notes) => {
+		const grouped = {};
+		notes.forEach((note) => {
+			// Assuming titles are non-empty and in Tibetan
+			const initialChar = note.title.charAt(0);
+			if (!grouped[initialChar]) {
+				grouped[initialChar] = [];
+			}
+			grouped[initialChar].push(note);
+		});
+		return Object.keys(grouped).map((key) => ({
+			title: key,
+			data: grouped[key],
+		}));
+	};
 
 	// Update the library state with the collected notes
 	useEffect(() => {
@@ -42,7 +57,7 @@ function LibraryScreen({ navigation }) {
 				// Sort the notes by their title using the Tibetan sorting function
 				notesArray.sort((a, b) => tibetanSort.compare(a.title, b.title));
 
-				setLibrary(notesArray);
+				setLibrary(groupNotesByInitialCharacter(notesArray));
 			});
 
 		return () => subscriber(); // Unsubscribe when component unmounts
@@ -70,15 +85,55 @@ function LibraryScreen({ navigation }) {
 			<Text style={styles.noteBody}>{item.body}</Text>
 		</TouchableOpacity>
 	);
+	const renderSectionHeader = ({ section: { title } }) => (
+		<View style={styles.sectionHeader}>
+			<Text style={styles.sectionHeaderText}>{title}</Text>
+		</View>
+	);
 
+	const sectionListRef = useRef();
+
+	const scrollToSection = (sectionIndex) => {
+		sectionListRef.current.scrollToLocation({
+			animated: true,
+			itemIndex: 1,
+			sectionIndex: sectionIndex,
+			viewPosition: 0, // top of the screen
+		});
+	};
+
+	const renderScrollbar = () => (
+		<View style={styles.scrollbarContainer}>
+			{library.map((section, index) => (
+				<TouchableOpacity
+					key={index}
+					onPress={() => scrollToSection(index)}
+					style={styles.scrollbarItem}
+				>
+					<Text style={styles.scrollbarItemText}>{section.title}</Text>
+				</TouchableOpacity>
+			))}
+		</View>
+	);
+
+	// ... inside your return statement
 	return (
 		<View style={styles.container}>
-			<FlatList
+			<SectionList
+				ref={sectionListRef}
+				contentContainerStyle={styles.sectionList}
+				sections={library}
+				renderItem={renderNote}
+				renderSectionHeader={renderSectionHeader}
+				keyExtractor={(item, index) => item.id + index}
+			/>
+			{/* <FlatList
 				contentContainerStyle={styles.flatList}
 				data={library}
 				renderItem={renderNote}
 				keyExtractor={(item, index) => index.toString()}
-			/>
+			/> */}
+
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
 					style={styles.modalTriggerButton}
@@ -117,25 +172,18 @@ function LibraryScreen({ navigation }) {
 					</View>
 				</TouchableOpacity>
 			</Modal>
+			{renderScrollbar()}
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#f2f2f7",
-		justifyContent: "flex-start",
-		width: "100%",
-		alignItems: "stretch", // Ensures children can fill the width
-	},
-	flatList: {
+	sectionList: {
 		borderWidth: 1,
 		padding: 10, // Example padding
 		paddingVertical: 50, // Example padding
 		margin: 40,
-		alignItems: "center", // Center items in the list
-		backgroundColor: "#d3d3d3", // Example background color
+		backgroundColor: "#f2f2f7", // Example background color
 		borderColor: "#808080", // Example border color
 		borderWidth: 1, // Example border width
 		borderRadius: 5,
@@ -150,6 +198,7 @@ const styles = StyleSheet.create({
 		margin: 10,
 		minWidth: "90%", // Minimum width
 		padding: 10,
+		marginLeft: 70,
 		backgroundColor: "#fff",
 		borderRadius: 5,
 		shadowColor: "#000",
@@ -157,6 +206,24 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
 		elevation: 5,
+	},
+	sectionHeader: {
+		alignSelf: "flex-start", // Stretch to fill the container
+		backgroundColor: "#d3d3d3",
+		minWidth: "10%", // Minimum width
+
+		paddingHorizontal: 10, // Adjust padding as needed
+		paddingVertical: 5, // Vertical padding for top and bottom
+		borderRadius: 10, // Adjust for desired roundness
+		// Remove alignItems and justifyContent if not needed
+		margin: 5, // Optional margin for spacing around the box
+	},
+
+	sectionHeaderText: {
+		fontWeight: "bold",
+		fontSize: 60,
+		textAlign: "left", // Ensure text is aligned to the left
+		alignSelf: "flex-start", // Align self to the start (
 	},
 	noteTitle: {
 		fontWeight: "bold",
@@ -240,6 +307,21 @@ const styles = StyleSheet.create({
 		padding: 10,
 		elevation: 5,
 		// Add other styling as needed
+	},
+	scrollbarContainer: {
+		position: "absolute",
+		left: 10,
+		top: 0,
+		bottom: 0,
+		justifyContent: "center",
+		alignItems: "center",
+		leftPadding: 25,
+
+		// Adjust the width as needed
+	},
+	scrollbarItem: {
+		padding: 5,
+		// Other styling as needed
 	},
 });
 
