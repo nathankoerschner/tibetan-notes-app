@@ -26,8 +26,9 @@ function LibraryScreen({ navigation }) {
 	const groupNotesByInitialCharacter = (notes) => {
 		const grouped = {};
 		notes.forEach((note) => {
-			// Assuming titles are non-empty and in Tibetan
-			const initialChar = note.title.charAt(0);
+			// want a little something here to find the nearest title char
+			const initialChar = tibetanSort.determineRootLetter(note.title);
+
 			if (!grouped[initialChar]) {
 				grouped[initialChar] = [];
 			}
@@ -55,7 +56,9 @@ function LibraryScreen({ navigation }) {
 					});
 				});
 				// Sort the notes by their title using the Tibetan sorting function
-				notesArray.sort((a, b) => tibetanSort.compare(a.title, b.title));
+				notesArray.sort((a, b) => {
+					tibetanSort.compare(a.title, b.title);
+				});
 
 				setLibrary(groupNotesByInitialCharacter(notesArray));
 			});
@@ -75,21 +78,6 @@ function LibraryScreen({ navigation }) {
 				<Text style={styles.charButtonText}>{char}</Text>
 			</TouchableOpacity>
 		));
-
-	const renderNote = ({ item }) => (
-		<TouchableOpacity
-			style={styles.noteContainer}
-			onPress={() => navigation.navigate("NewNote", { note: item })}
-		>
-			<Text style={styles.noteTitle}>{item.title}</Text>
-			<Text style={styles.noteBody}>{item.body}</Text>
-		</TouchableOpacity>
-	);
-	const renderSectionHeader = ({ section: { title } }) => (
-		<View style={styles.sectionHeader}>
-			<Text style={styles.sectionHeaderText}>{title}</Text>
-		</View>
-	);
 
 	const flatListRef = useRef();
 
