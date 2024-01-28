@@ -712,4 +712,18 @@ function compareEwts(a, b) {
 	return compareInTrie(a, b, trieEwts);
 }
 
-export default { compare, compareEwts };
+function determineRootLetter(a) {
+	const tibetanCharacters = "ཀཁགངཅཆཇཉཏཐདནཔཕབམཙཚཛཝཞཟའཡརལཤསཧཨ".split("");
+	console.log("a is ", a);
+	for (let i = 0; i < tibetanCharacters.length; i++) {
+		compared = compare(a, tibetanCharacters[i]);
+		if (compared == 0) {
+			return tibetanCharacters[i];
+		}
+		if (compared == -1) {
+			return tibetanCharacters[i - 1];
+		}
+	}
+	return a.split("")[0];
+}
+export default { compare, compareEwts, determineRootLetter };
