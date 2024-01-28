@@ -22,7 +22,7 @@ function NewNote({ navigation, route }) {
 	}
 
 	const addNote = () => {
-		if (noteTitle.trim().length === 0 || noteBody.trim().length === 0) {
+		if (noteTitle.trim().length === 0 ) {
 			// Optionally handle the case of empty title or body
 			return;
 		}
@@ -37,7 +37,7 @@ function NewNote({ navigation, route }) {
 	};
 
 	const saveNote = () => {
-		if (noteTitle.trim().length === 0 || noteBody.trim().length === 0) {
+		if (noteTitle.trim().length === 0) {
 			// Optionally handle the case of empty title or body
 			return;
 		}
