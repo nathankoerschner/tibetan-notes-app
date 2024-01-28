@@ -91,14 +91,13 @@ function LibraryScreen({ navigation }) {
 		</View>
 	);
 
-	const sectionListRef = useRef();
+	const flatListRef = useRef();
 
 	const scrollToSection = (sectionIndex) => {
-		sectionListRef.current.scrollToLocation({
+		flatListRef.current.scrollToIndex({
 			animated: true,
-			itemIndex: 1,
-			sectionIndex: sectionIndex,
-			viewPosition: 0, // top of the screen
+			index: sectionIndex,
+			viewPosition: 0, // Scrolls to the top of the item at the specified index
 		});
 	};
 
@@ -152,6 +151,7 @@ function LibraryScreen({ navigation }) {
 			/> */}
 
 			<FlatList
+				ref={flatListRef} // Set the ref here
 				data={library}
 				renderItem={({ item }) => <Section section={item} />}
 				keyExtractor={(item, index) => `section-${index}`}
@@ -261,9 +261,9 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		flexDirection: "row",
-		justifyContent: "flex-end",
+		justifyContent: "center",
 		alignItems: "center",
-		padding: 10,
+		padding: 0,
 	},
 	modalTriggerButton: {
 		backgroundColor: "#007AFF", // Lighter blue background
