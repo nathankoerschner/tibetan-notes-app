@@ -235,10 +235,10 @@ const styles = StyleSheet.create({
 	},
 	sectionHeader: {
 		alignSelf: "flex-start", // Stretch to fill the container
-		backgroundColor: "#d3d3d3",
-		minWidth: "10%", // Minimum width
+		backgroundColor: "#f2f2f7", //"#d3d3d3",
+		// minWidth: "10%", // Minimum width
 
-		paddingHorizontal: 10, // Adjust padding as needed
+		paddingHorizontal: 15, // Adjust padding as needed
 		paddingVertical: 5, // Vertical padding for top and bottom
 		borderRadius: 10, // Adjust for desired roundness
 		// Remove alignItems and justifyContent if not needed
@@ -347,7 +347,6 @@ const styles = StyleSheet.create({
 	},
 	scrollbarItem: {
 		padding: 5,
-		// Other styling as needed
 	},
 });
 
