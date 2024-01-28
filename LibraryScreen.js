@@ -115,24 +115,48 @@ function LibraryScreen({ navigation }) {
 			))}
 		</View>
 	);
+	const Section = ({ section }) => (
+		<View style={styles.sectionContainer}>
+			<View style={styles.sectionHeader}>
+				<Text style={styles.sectionHeaderText}>{section.title}</Text>
+			</View>
+			{section.data.map((item, index) => (
+				<TouchableOpacity
+					key={index}
+					style={styles.itemContainer}
+					onPress={() => navigation.navigate("NewNote", { note: item })}
+				>
+					<Text style={styles.itemTitle}>{item.title}</Text>
+					<Text style={styles.itemBody}>{item.body}</Text>
+				</TouchableOpacity>
+			))}
+		</View>
+	);
 
 	// ... inside your return statement
 	return (
 		<View style={styles.container}>
-			<SectionList
+			{/* <SectionList
 				ref={sectionListRef}
 				contentContainerStyle={styles.sectionList}
 				sections={library}
 				renderItem={renderNote}
 				renderSectionHeader={renderSectionHeader}
 				keyExtractor={(item, index) => item.id + index}
-			/>
+			/> */}
 			{/* <FlatList
 				contentContainerStyle={styles.flatList}
 				data={library}
 				renderItem={renderNote}
 				keyExtractor={(item, index) => index.toString()}
 			/> */}
+
+			<FlatList
+				data={library}
+				renderItem={({ item }) => <Section section={item} />}
+				keyExtractor={(item, index) => `section-${index}`}
+				// Other props as needed
+			/>
 
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
@@ -178,10 +202,10 @@ function LibraryScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-	sectionList: {
+	sectionContainer: {
 		borderWidth: 1,
 		padding: 10, // Example padding
-		paddingVertical: 50, // Example padding
+		paddingBottom: 50, // Example padding
 		margin: 40,
 		backgroundColor: "#f2f2f7", // Example background color
 		borderColor: "#808080", // Example border color
@@ -193,11 +217,13 @@ const styles = StyleSheet.create({
 		shadowRadius: 3.84,
 		elevation: 5,
 	},
-	noteContainer: {
+	itemContainer: {
 		width: "90%", // Specific width
 		margin: 10,
-		minWidth: "90%", // Minimum width
+
 		padding: 10,
+		minWidth: "90%", // Minimum width
+		marginLeft: 70,
 		marginLeft: 70,
 		backgroundColor: "#fff",
 		borderRadius: 5,
@@ -222,15 +248,15 @@ const styles = StyleSheet.create({
 	sectionHeaderText: {
 		fontWeight: "bold",
 		fontSize: 60,
-		textAlign: "left", // Ensure text is aligned to the left
-		alignSelf: "flex-start", // Align self to the start (
+		textAlign: "center", // Ensure text is aligned to the left
+		alignSelf: "stretch", // Align self to the start (
 	},
-	noteTitle: {
+	itemTitle: {
 		fontWeight: "bold",
 		fontSize: 20,
 		marginBottom: 5,
 	},
-	noteBody: {
+	itemBody: {
 		fontSize: 16,
 	},
 	buttonContainer: {
