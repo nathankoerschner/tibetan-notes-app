@@ -159,12 +159,12 @@ function LibraryScreen({ navigation }) {
 			/>
 
 			<View style={styles.buttonContainer}>
-				<TouchableOpacity
+				{/* <TouchableOpacity
 					style={styles.modalTriggerButton}
 					onPress={() => setModalVisible(true)}
 				>
 					<Text style={styles.modalTriggerButtonText}>ཀ་ཁ་ག་༉</Text>
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 
 				<TouchableOpacity
 					style={styles.addButton}
