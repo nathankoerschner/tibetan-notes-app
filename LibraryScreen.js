@@ -1,12 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import {
 	StyleSheet,
 	View,
 	Text,
 	TouchableOpacity,
 	FlatList,
-	Modal,
-	SectionList,
 } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
@@ -15,34 +13,26 @@ import { useAuth } from "./AuthContext";
 import tibetanSort from "./tibetan-sort-js";
 
 function LibraryScreen({ navigation }) {
-	const { user, logout } = useAuth();
-	const [isModalVisible, setModalVisible] = useState(false);
+	const { user } = useAuth();
+	const [library, setLibrary] = useState([]);
+	const flatListRef = useRef();
 
 	if (!user) {
 		return null;
 	}
 
-	const [library, setLibrary] = useState([]);
-	const groupNotesByInitialCharacter = (notes) => {
-		const grouped = {};
-		notes.forEach((note) => {
-			// want a little something here to find the nearest title char
+	const groupNotesByInitialCharacter = useCallback((notes) => {
+		const grouped = notes.reduce((acc, note) => {
 			const initialChar = tibetanSort.determineRootLetter(note.title) ?? " ";
+			acc[initialChar] = acc[initialChar] || [];
+			acc[initialChar].push(note);
+			return acc;
+		}, {});
 
-			if (!grouped[initialChar]) {
-				grouped[initialChar] = [];
-			}
-			grouped[initialChar].push(note);
-		});
-		// Sort keys alphabetically
-		const sortedKeys = Object.keys(grouped).sort();
-
-		// Map sorted keys to desired output format
-		return sortedKeys.map((key) => ({
-			title: key,
-			data: grouped[key],
-		}));
-	};
+		return Object.keys(grouped)
+			.sort()
+			.map((key) => ({ title: key, data: grouped[key] }));
+	}, []);
 
 	// Update the library state with the collected notes
 	useEffect(() => {
@@ -51,47 +41,30 @@ function LibraryScreen({ navigation }) {
 			.doc(user.uid)
 			.collection("Notes")
 			.onSnapshot((querySnapshot) => {
-				const notesArray = [];
-				querySnapshot.forEach((documentSnapshot) => {
-					const noteData = documentSnapshot.data();
-					notesArray.push({
-						...noteData,
-						id: documentSnapshot.id, // Include the document ID
-					});
-				});
-				// Sort the notes by their title using the Tibetan sorting function
-				notesArray.sort((a, b) => {
-					tibetanSort.compare(a.title, b.title);
-				});
-
+				const notesArray = querySnapshot.docs.map((doc) => ({
+					...doc.data(),
+					id: doc.id,
+				}));
+				notesArray.sort((a, b) => tibetanSort.compare(a.title, b.title));
 				setLibrary(groupNotesByInitialCharacter(notesArray));
 			});
 
-		return () => subscriber(); // Unsubscribe when component unmounts
-	}, []); // Empty dependency array to ensure this effect runs only once
+		return () => subscriber();
+	}, [groupNotesByInitialCharacter, user.uid]);
+	const renderSection = useCallback(
+		({ item }) => <Section section={item} navigation={navigation} />,
+		[navigation]
+	);
 
 	const tibetanCharacters = "ཀཁགངཅཆཇཉཏཐདནཔཕབམཙཚཛཝཞཟའཡརལཤསཧཨ";
-	const halfLength = Math.ceil(tibetanCharacters.length / 2);
 
-	const firstRowChars = tibetanCharacters.slice(0, halfLength).split("");
-	const secondRowChars = tibetanCharacters.slice(halfLength).split("");
-
-	const renderCharButtons = (chars) =>
-		chars.map((char, index) => (
-			<TouchableOpacity key={index} style={styles.charButton}>
-				<Text style={styles.charButtonText}>{char}</Text>
-			</TouchableOpacity>
-		));
-
-	const flatListRef = useRef();
-
-	const scrollToSection = (sectionIndex) => {
-		flatListRef.current.scrollToIndex({
+	const scrollToSection = useCallback((sectionIndex) => {
+		flatListRef.current?.scrollToIndex({
 			animated: true,
 			index: sectionIndex,
-			viewPosition: 0, // Scrolls to the top of the item at the specified index
+			viewPosition: 0,
 		});
-	};
+	}, []);
 
 	const renderScrollbar = () => (
 		<View style={styles.scrollbarContainer}>
@@ -106,7 +79,7 @@ function LibraryScreen({ navigation }) {
 			))}
 		</View>
 	);
-	const Section = ({ section }) => (
+	const Section = ({ section, navigation }) => (
 		<View style={styles.sectionContainer}>
 			<View style={styles.sectionHeader}>
 				<Text style={styles.sectionHeaderText}>{section.title}</Text>
@@ -127,37 +100,14 @@ function LibraryScreen({ navigation }) {
 	// ... inside your return statement
 	return (
 		<View style={styles.container}>
-			{/* <SectionList
-				ref={sectionListRef}
-				contentContainerStyle={styles.sectionList}
-				sections={library}
-				renderItem={renderNote}
-				renderSectionHeader={renderSectionHeader}
-				keyExtractor={(item, index) => item.id + index}
-			/> */}
-			{/* <FlatList
-				contentContainerStyle={styles.flatList}
-				data={library}
-				renderItem={renderNote}
-				keyExtractor={(item, index) => index.toString()}
-			/> */}
-
 			<FlatList
-				ref={flatListRef} // Set the ref here
+				ref={flatListRef}
 				data={library}
-				renderItem={({ item }) => <Section section={item} />}
+				renderItem={renderSection}
 				keyExtractor={(item, index) => `section-${index}`}
-				// Other props as needed
 			/>
 
 			<View style={styles.buttonContainer}>
-				{/* <TouchableOpacity
-					style={styles.modalTriggerButton}
-					onPress={() => setModalVisible(true)}
-				>
-					<Text style={styles.modalTriggerButtonText}>ཀ་ཁ་ག་༉</Text>
-				</TouchableOpacity> */}
-
 				<TouchableOpacity
 					style={styles.addButton}
 					onPress={() => navigation.navigate("NewNote")}
@@ -165,29 +115,7 @@ function LibraryScreen({ navigation }) {
 					<Text style={styles.addButtonText}>+</Text>
 				</TouchableOpacity>
 			</View>
-			<Modal
-				transparent={true}
-				visible={isModalVisible}
-				onRequestClose={() => setModalVisible(false)}
-			>
-				<TouchableOpacity
-					style={styles.modalOverlay}
-					activeOpacity={1}
-					onPressOut={() => setModalVisible(false)}
-				>
-					<View style={styles.modalView} onStartShouldSetResponder={() => true}>
-						{/* Modal Content */}
-						<View style={styles.charBox}>
-							<View style={styles.charRow}>
-								{renderCharButtons(firstRowChars)}
-							</View>
-							<View style={styles.charRow}>
-								{renderCharButtons(secondRowChars)}
-							</View>
-						</View>
-					</View>
-				</TouchableOpacity>
-			</Modal>
+
 			{renderScrollbar()}
 		</View>
 	);
@@ -217,7 +145,6 @@ const styles = StyleSheet.create({
 		width: "70%", // Specific width
 		margin: 10,
 		alignSelf: "center",
-
 		padding: 10,
 		minWidth: "70%", // Minimum width
 		marginLeft: 70,
@@ -262,21 +189,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		padding: 0,
 	},
-	modalTriggerButton: {
-		backgroundColor: "#007AFF", // Lighter blue background
-		borderRadius: 20,
-		paddingVertical: 10,
-		height: 60,
-		paddingHorizontal: 15,
-		marginRight: 10,
-		position: "absolute", // Positioning absolutely
-		bottom: 20, // Same vertical position as addButton
-		right: 90, // Adjust this value as needed to position the button
-	},
-	modalTriggerButtonText: {
-		color: "white",
-		fontSize: 28,
-	},
 	addButton: {
 		backgroundColor: "#007AFF", // Consistent button color
 		width: 60,
@@ -318,32 +230,25 @@ const styles = StyleSheet.create({
 		color: "white",
 		fontSize: 18,
 	},
-	modalOverlay: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
-	},
-	modalView: {
-		backgroundColor: "white", // Non-transparent background for modal content
-		borderRadius: 10,
-		padding: 10,
-		elevation: 5,
-		// Add other styling as needed
-	},
 	scrollbarContainer: {
+		alignSelf: "stretch",
+		flexDirection: "column",
+		flexWrap: "wrap",
+		// Other styles as needed
 		position: "absolute",
-		left: 0,
+		left: "3%",
 		top: 0,
 		bottom: 0,
 		justifyContent: "center",
 		alignItems: "center",
-		leftPadding: 25,
+
+		maxHeight: "98%",
 
 		// Adjust the width as needed
 	},
 	scrollbarItem: {
-		padding: 10,
+		padding: 3,
+		width: 40,
 	},
 	scrollbarItemText: {
 		fontSize: 30,
