@@ -27,14 +27,18 @@ function LibraryScreen({ navigation }) {
 		const grouped = {};
 		notes.forEach((note) => {
 			// want a little something here to find the nearest title char
-			const initialChar = tibetanSort.determineRootLetter(note.title);
+			const initialChar = tibetanSort.determineRootLetter(note.title) ?? " ";
 
 			if (!grouped[initialChar]) {
 				grouped[initialChar] = [];
 			}
 			grouped[initialChar].push(note);
 		});
-		return Object.keys(grouped).map((key) => ({
+		// Sort keys alphabetically
+		const sortedKeys = Object.keys(grouped).sort();
+
+		// Map sorted keys to desired output format
+		return sortedKeys.map((key) => ({
 			title: key,
 			data: grouped[key],
 		}));
@@ -194,7 +198,11 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		padding: 10, // Example padding
 		paddingBottom: 50, // Example padding
-		margin: 40,
+		margin: 80,
+		width: "80%",
+		alignContent: "center",
+		alignSelf: "center",
+		maxWidth: "75%",
 		backgroundColor: "#f2f2f7", // Example background color
 		borderColor: "#808080", // Example border color
 		borderWidth: 1, // Example border width
@@ -206,11 +214,12 @@ const styles = StyleSheet.create({
 		elevation: 5,
 	},
 	itemContainer: {
-		width: "90%", // Specific width
+		width: "70%", // Specific width
 		margin: 10,
+		alignSelf: "center",
 
 		padding: 10,
-		minWidth: "90%", // Minimum width
+		minWidth: "70%", // Minimum width
 		marginLeft: 70,
 		marginLeft: 70,
 		backgroundColor: "#fff",
@@ -324,7 +333,7 @@ const styles = StyleSheet.create({
 	},
 	scrollbarContainer: {
 		position: "absolute",
-		left: 10,
+		left: 0,
 		top: 0,
 		bottom: 0,
 		justifyContent: "center",
@@ -334,7 +343,10 @@ const styles = StyleSheet.create({
 		// Adjust the width as needed
 	},
 	scrollbarItem: {
-		padding: 5,
+		padding: 10,
+	},
+	scrollbarItemText: {
+		fontSize: 30,
 	},
 });
 

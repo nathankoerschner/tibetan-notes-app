@@ -714,7 +714,6 @@ function compareEwts(a, b) {
 
 function determineRootLetter(a) {
 	const tibetanCharacters = "ཀཁགངཅཆཇཉཏཐདནཔཕབམཙཚཛཝཞཟའཡརལཤསཧཨ".split("");
-	console.log("a is ", a);
 	for (let i = 0; i < tibetanCharacters.length; i++) {
 		compared = compare(a, tibetanCharacters[i]);
 		if (compared == 0) {
