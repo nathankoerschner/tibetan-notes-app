@@ -100,6 +100,7 @@ function LibraryScreen({ navigation }) {
 	// ... inside your return statement
 	return (
 		<View style={styles.container}>
+			<View style={styles.leftSidebar}>{renderScrollbar()}</View>
 			<FlatList
 				ref={flatListRef}
 				data={library}
@@ -115,21 +116,39 @@ function LibraryScreen({ navigation }) {
 					<Text style={styles.addButtonText}>+</Text>
 				</TouchableOpacity>
 			</View>
-
-			{renderScrollbar()}
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flexDirection: "row", // Align children side by side
+		flex: 1, // Take full height of the screen
+	},
+	leftSidebar: {
+		backgroundColor: "white", // Gray background
+		width: "30%", // Adjust width as needed
+		justifyContent: "center",
+		alignItems: "center",
+		borderColor: "#808080", // Example border color
+		borderWidth: 1, // Example border width
+		borderRadius: 2,
+		shadowColor: "#808080",
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+	},
+
 	sectionContainer: {
 		borderWidth: 1,
 		padding: 10, // Example padding
 		paddingBottom: 50, // Example padding
-		margin: 80,
-		width: "80%",
+		margin: 40,
+		width: "60%",
 		alignContent: "center",
 		alignSelf: "center",
+		marginRight: "10%",
 		maxWidth: "75%",
 		backgroundColor: "#f2f2f7", // Example background color
 		borderColor: "#808080", // Example border color
@@ -147,7 +166,6 @@ const styles = StyleSheet.create({
 		alignSelf: "center",
 		padding: 10,
 		minWidth: "70%", // Minimum width
-		marginLeft: 70,
 		marginLeft: 70,
 		backgroundColor: "#fff",
 		borderRadius: 5,
@@ -231,27 +249,32 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 	},
 	scrollbarContainer: {
-		alignSelf: "stretch",
-		flexDirection: "column",
+		marginVertical: "4%",
+		alignSelf: "center",
+		flexDirection: "row",
 		flexWrap: "wrap",
 		// Other styles as needed
-		position: "absolute",
-		left: "3%",
+
 		top: 0,
 		bottom: 0,
 		justifyContent: "center",
 		alignItems: "center",
-
-		maxHeight: "98%",
+		// width: "40%"
+		width: "70%", // Take full width of the sidebar
+		maxHeight: "100%", // Limit height to the sidebar
+		// Keep other styles as is,
+		// maxWidth: "50%",
+		maxHeight: "88%",
 
 		// Adjust the width as needed
 	},
 	scrollbarItem: {
-		padding: 3,
-		width: 40,
+		padding: 13,
+		width: 50,
+		alignSelf: "flex-start",
 	},
 	scrollbarItemText: {
-		fontSize: 30,
+		fontSize: 44,
 	},
 });
 
