@@ -6,6 +6,7 @@ import NewNote from "./NewNote";
 import LibraryScreen from "./LibraryScreen";
 import { AuthProvider } from "./AuthContext";
 import LoginScreen from "./LoginScreen";
+import { useAuth } from "./AuthContext"; // Import the useAuth hook
 
 const Stack = createNativeStackNavigator();
 
@@ -13,7 +14,7 @@ export default function App() {
 	return (
 		<NavigationContainer>
 			<AuthProvider>
-				<Stack.Navigator initialRouteName="Dictionary">
+				<Stack.Navigator initialRouteName="Login">
 					<Stack.Screen name="Login" component={LoginScreen} />
 					<Stack.Screen
 						name="Dictionary"

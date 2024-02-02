@@ -41,8 +41,8 @@ export default function LoginScreen({ navigation }) {
 					<View>
 						<Text>Welcome, {user.email}</Text>
 						<Button
-							title="Go To Library"
-							onPress={() => navigation.navigate("Library")}
+							title="Go To Dictionary"
+							onPress={() => navigation.navigate("Dictionary")}
 						/>
 						<Button title="Logout" onPress={handleLogout} />
 					</View>

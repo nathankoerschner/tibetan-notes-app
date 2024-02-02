@@ -18,9 +18,7 @@ function LibraryScreen({ navigation }) {
 	const flatListRef = useRef();
 
 	if (!user) {
-		// navigate to login screen
-		// or show a message
-		navigation.navigate("Login");
+		return null;
 	}
 
 	const groupNotesByInitialCharacter = useCallback((notes) => {
@@ -102,6 +100,12 @@ function LibraryScreen({ navigation }) {
 	// ... inside your return statement
 	return (
 		<View style={styles.container}>
+			<TouchableOpacity
+				onPress={() => navigation.navigate("Login")}
+				style={styles.logoutButton}
+			>
+				<Text style={styles.logoutButtonText}>Settings</Text>
+			</TouchableOpacity>
 			<View style={styles.leftSidebar}>{renderScrollbar()}</View>
 			<FlatList
 				ref={flatListRef}
@@ -277,6 +281,19 @@ const styles = StyleSheet.create({
 	},
 	scrollbarItemText: {
 		fontSize: 44,
+	},
+	logoutButton: {
+		position: "absolute", // Position it over everything else
+		top: 10, // Distance from the top of the container
+		marginTop: 12,
+		left: 10, // Distance from the left of the container
+		backgroundColor: "#ddd", // Light gray background for visibility
+		padding: 8, // Padding inside the button
+		borderRadius: 5, // Rounded corners
+		zIndex: 1, // Make sure it's above other elements
+	},
+	logoutButtonText: {
+		fontSize: 16, // Adjust as needed
 	},
 });
 
