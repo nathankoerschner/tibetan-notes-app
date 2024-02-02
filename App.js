@@ -13,65 +13,16 @@ export default function App() {
 	return (
 		<NavigationContainer>
 			<AuthProvider>
-				<Stack.Navigator initialRouteName="Login">
+				<Stack.Navigator initialRouteName="Dictionary">
 					<Stack.Screen name="Login" component={LoginScreen} />
-					<Stack.Screen name="Library" component={LibraryScreen} />
+					<Stack.Screen
+						name="Dictionary"
+						component={LibraryScreen}
+						options={{ headerShown: false }}
+					/>
 					<Stack.Screen name="NewNote" component={NewNote} />
 				</Stack.Navigator>
 			</AuthProvider>
 		</NavigationContainer>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "white",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	addButton: {
-		backgroundColor: "blue",
-		width: 60,
-		height: 60,
-		borderRadius: 30,
-		alignItems: "center",
-		justifyContent: "center",
-		position: "absolute",
-		bottom: 20,
-		right: 20,
-	},
-	addButtonText: {
-		color: "white",
-		fontSize: 30,
-	},
-	note: {
-		margin: 10,
-		padding: 10,
-		backgroundColor: "#f9f9f9",
-	},
-	container: {
-		flex: 1,
-		backgroundColor: "white",
-		alignItems: "center",
-		justifyContent: "center",
-		paddingHorizontal: 20,
-	},
-	title: {
-		fontSize: 24,
-		fontWeight: "bold",
-		marginBottom: 20,
-	},
-	input: {
-		width: "100%",
-		height: 40,
-		borderColor: "gray",
-		borderWidth: 1,
-		marginBottom: 10,
-		paddingHorizontal: 10,
-	},
-	error: {
-		color: "red",
-		marginTop: 10,
-	},
-});

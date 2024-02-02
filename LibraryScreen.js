@@ -18,7 +18,9 @@ function LibraryScreen({ navigation }) {
 	const flatListRef = useRef();
 
 	if (!user) {
-		return null;
+		// navigate to login screen
+		// or show a message
+		navigation.navigate("Login");
 	}
 
 	const groupNotesByInitialCharacter = useCallback((notes) => {
