@@ -25,6 +25,9 @@ function LibraryScreen({ navigation }) {
 		}
 	}, []);
 	const flatListRef = useRef();
+	if (!user) {
+		return null;
+	}
 
 	const groupNotesByInitialCharacter = useCallback((notes) => {
 		const grouped = notes.reduce((acc, note) => {

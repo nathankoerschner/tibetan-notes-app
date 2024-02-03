@@ -26,6 +26,7 @@ export default function LoginScreen({ navigation }) {
 	const handleLogout = async () => {
 		try {
 			await logout();
+			// navigation.navigate("Login");
 		} catch (error) {
 			console.error("Logout failed:", error);
 		}
