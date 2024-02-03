@@ -93,8 +93,10 @@ function LibraryScreen({ navigation }) {
 				>
 					<Text
 						style={{
-							color: section.title === currentVisibleItem ? "#B31D1D" : "black", // Conditional text color
+							color:
+								section.title === currentVisibleItem ? "#B31D1D" : "#636363", // Conditional text color
 							fontSize: 50,
+							fontWeight: section.title === currentVisibleItem ? "900" : "100",
 						}}
 					>
 						{section.title}
@@ -139,6 +141,10 @@ function LibraryScreen({ navigation }) {
 				keyExtractor={(item, index) => `section-${index}`}
 				viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
 				ListFooterComponent={<View style={{ height: 300 }} />}
+				onScrollToIndexFailed={(info) => {
+					// Attempt to scroll to the bottom of the list as a fallback
+					flatListRef.current?.scrollToEnd({ animated: true });
+				}}
 			/>
 
 			<View style={styles.buttonContainer}>
@@ -285,7 +291,7 @@ const styles = StyleSheet.create({
 	},
 	scrollbarItem: {
 		padding: 13,
-		width: 60,
+		width: 62,
 		alignSelf: "flex-start",
 	},
 
