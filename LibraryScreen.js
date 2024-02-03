@@ -123,7 +123,36 @@ function LibraryScreen({ navigation }) {
 		</View>
 	);
 
-	// ... inside your return statement
+	const HEIGHT_OF_SINGLE_NOTE = 115;
+	const HEIGHT_OF_SECTION_HEADER = 155;
+	const TOP_MARGIN = 20;
+	const BOTTOM_MARGIN = 20;
+	const TOP_PADDING_HEIGHT = 10;
+	const BOTTOM_PADDING = 50;
+
+	// Function to calculate the total height of a section based on the number of items it contains
+	const calculateSectionHeight = (itemCount) => {
+		return (
+			TOP_MARGIN +
+			HEIGHT_OF_SECTION_HEADER +
+			HEIGHT_OF_SINGLE_NOTE * itemCount +
+			TOP_PADDING_HEIGHT +
+			BOTTOM_PADDING +
+			BOTTOM_MARGIN
+		);
+	};
+
+	// getItemLayout function for FlatList
+	const getItemLayout = (data, index) => {
+		// Calculate the offset up to this section
+		let offset = 0;
+		for (let i = 0; i < index; i++) {
+			offset += calculateSectionHeight(data[i].data.length);
+		}
+
+		const length = calculateSectionHeight(data[index].data.length);
+		return { length, offset, index };
+	};
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity
@@ -141,6 +170,7 @@ function LibraryScreen({ navigation }) {
 				keyExtractor={(item, index) => `section-${index}`}
 				viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
 				ListFooterComponent={<View style={{ height: 300 }} />}
+				getItemLayout={getItemLayout}
 				onScrollToIndexFailed={(info) => {
 					// Attempt to scroll to the bottom of the list as a fallback
 					flatListRef.current?.scrollToEnd({ animated: true });
