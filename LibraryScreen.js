@@ -31,7 +31,7 @@ function LibraryScreen({ navigation }) {
 
 	const groupNotesByInitialCharacter = useCallback((notes) => {
 		const grouped = notes.reduce((acc, note) => {
-			const initialChar = tibetanSort.determineRootLetter(note.title) ?? " ";
+			const initialChar = tibetanSort.determineRootLetter(note.title) ?? "*";
 			acc[initialChar] = acc[initialChar] || [];
 			acc[initialChar].push(note);
 			return acc;
