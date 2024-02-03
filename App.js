@@ -14,7 +14,7 @@ export default function App() {
 	return (
 		<NavigationContainer>
 			<AuthProvider>
-				<Stack.Navigator initialRouteName="AuthLoading">
+				<Stack.Navigator initialRouteName="Login">
 					<Stack.Screen
 						name="AuthLoading"
 						component={AuthLoadingScreen}

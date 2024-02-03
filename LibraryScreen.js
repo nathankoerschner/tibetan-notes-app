@@ -15,11 +15,16 @@ import tibetanSort from "./tibetan-sort-js";
 function LibraryScreen({ navigation }) {
 	const { user } = useAuth();
 	const [library, setLibrary] = useState([]);
+	const [currentVisibleItem, setCurrentVisibleItem] = useState(null);
+	// Handler for onViewableItemsChanged
+	const handleViewableItemsChanged = useCallback(({ viewableItems }) => {
+		// Assuming each item has a unique id
+		if (viewableItems.length > 0) {
+			const firstViewItem = viewableItems[0].item;
+			setCurrentVisibleItem(firstViewItem.title); // Update the state with the id of the first viewable item
+		}
+	}, []);
 	const flatListRef = useRef();
-
-	if (!user) {
-		return null;
-	}
 
 	const groupNotesByInitialCharacter = useCallback((notes) => {
 		const grouped = notes.reduce((acc, note) => {
@@ -52,15 +57,24 @@ function LibraryScreen({ navigation }) {
 		return () => subscriber();
 	}, [groupNotesByInitialCharacter, user.uid]);
 	const renderSection = useCallback(
-		({ item }) => <Section section={item} navigation={navigation} />,
+		({ item }) => (
+			<Section
+				section={item}
+				navigation={navigation}
+				style={{ marginVertical: "15%" }}
+			/>
+		),
 		[navigation]
 	);
 
 	const tibetanCharacters = "ཀཁགངཅཆཇཉཏཐདནཔཕབམཙཚཛཝཞཟའཡརལཤསཧཨ";
 
-	const scrollToSection = useCallback((sectionIndex) => {
+	const scrollToSection = useCallback((sectionIndex, title) => {
+		// Set the current visible title based on the clicked section
+		// setCurrentVisibleItem(title);
+
 		flatListRef.current?.scrollToIndex({
-			animated: true,
+			animated: false,
 			index: sectionIndex,
 			viewPosition: 0,
 		});
@@ -74,7 +88,14 @@ function LibraryScreen({ navigation }) {
 					onPress={() => scrollToSection(index)}
 					style={styles.scrollbarItem}
 				>
-					<Text style={styles.scrollbarItemText}>{section.title}</Text>
+					<Text
+						style={{
+							color: section.title === currentVisibleItem ? "#B31D1D" : "black", // Conditional text color
+							fontSize: 50,
+						}}
+					>
+						{section.title}
+					</Text>
 				</TouchableOpacity>
 			))}
 		</View>
@@ -111,7 +132,10 @@ function LibraryScreen({ navigation }) {
 				ref={flatListRef}
 				data={library}
 				renderItem={renderSection}
+				onViewableItemsChanged={handleViewableItemsChanged}
 				keyExtractor={(item, index) => `section-${index}`}
+				viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
+				ListFooterComponent={<View style={{ height: 300 }} />}
 			/>
 
 			<View style={styles.buttonContainer}>
@@ -261,9 +285,7 @@ const styles = StyleSheet.create({
 		width: 60,
 		alignSelf: "flex-start",
 	},
-	scrollbarItemText: {
-		fontSize: 50,
-	},
+
 	logoutButton: {
 		position: "absolute", // Position it over everything else
 		bottom: 10, // Distance from the top of the container
