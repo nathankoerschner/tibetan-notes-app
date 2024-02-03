@@ -41,10 +41,11 @@ export default function LoginScreen({ navigation }) {
 					<View>
 						<Text>Welcome, {user.email}</Text>
 						<Button
+							style={styles.text}
 							title="Go To Dictionary"
 							onPress={() => navigation.navigate("Dictionary")}
 						/>
-						<Button title="Logout" onPress={handleLogout} />
+						<Button title="Logout" style={styles.text} onPress={handleLogout} />
 					</View>
 				) : (
 					<View>
@@ -87,18 +88,19 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 		color: "#333", // Updated color for title
 	},
+
 	input: {
 		minWidth: 250, // Set minimum width for the input
 		width: "100%",
 		height: 40,
-		borderColor: "#007AFF", // Updated border color
+		borderColor: "#fff", // Updated border color
 		borderWidth: 1,
 		borderRadius: 5, // Rounded corners for inputs
 		marginBottom: 15,
 		paddingHorizontal: 10,
 	},
 	button: {
-		backgroundColor: "#007AFF", // Updated button color
+		backgroundColor: "#fff", // Updated button color
 		padding: 10,
 		borderRadius: 5, // Rounded corners for button
 		alignItems: "center",

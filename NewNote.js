@@ -22,7 +22,7 @@ function NewNote({ navigation, route }) {
 	}
 
 	const addNote = () => {
-		if (noteTitle.trim().length === 0 ) {
+		if (noteTitle.trim().length === 0) {
 			// Optionally handle the case of empty title or body
 			return;
 		}
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
 	titleInput: {
 		width: "90%",
 		height: 50,
-		borderColor: "#007AFF",
+		borderColor: "#fff",
 		borderWidth: 1,
 		borderRadius: 5,
 		marginBottom: 15,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
 	bodyInput: {
 		width: "90%",
 		height: 150, // Larger height for body input
-		borderColor: "#007AFF",
+		borderColor: "#fff",
 		borderWidth: 1,
 		borderRadius: 5,
 		marginBottom: 15,

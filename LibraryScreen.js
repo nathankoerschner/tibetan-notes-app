@@ -136,72 +136,57 @@ const styles = StyleSheet.create({
 		width: "30%", // Adjust width as needed
 		justifyContent: "center",
 		alignItems: "center",
-		borderColor: "#808080", // Example border color
+		borderColor: "#fff", // Example border color
 		borderWidth: 1, // Example border width
-		borderRadius: 2,
-		shadowColor: "#808080",
 		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
-		elevation: 5,
 	},
 
 	sectionContainer: {
-		borderWidth: 1,
 		padding: 10, // Example padding
+		paddingHorizontal: 60, // Example padding
 		paddingBottom: 50, // Example padding
-		margin: 40,
-		width: "60%",
+		marginVertical: 20,
+
+		marginHorizontal: 0, // Add horizontal margin
 		alignContent: "center",
 		alignSelf: "center",
-		marginRight: "10%",
-		maxWidth: "75%",
-		backgroundColor: "#f2f2f7", // Example background color
-		borderColor: "#808080", // Example border color
-		borderWidth: 1, // Example border width
-		borderRadius: 5,
-		shadowColor: "#808080",
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
-		elevation: 5,
+
+		backgroundColor: "#fff", // Example background color
+		borderColor: "#fff", // Example border color
+
+		borderRadius: 15, // Adjust for desired roundness
 	},
 	itemContainer: {
-		width: "70%", // Specific width
-		margin: 10,
+		width: "100%", // Specific width
+		marginVertical: 10,
 		alignSelf: "center",
 		padding: 10,
-		minWidth: "70%", // Minimum width
-		marginLeft: 70,
+		minWidth: "85%", // Minimum width
 		backgroundColor: "#fff",
 		borderRadius: 5,
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
-		elevation: 5,
+		borderTopColor: "#f2f2f7",
+		borderTopWidth: 1,
 	},
 	sectionHeader: {
 		alignSelf: "flex-start", // Stretch to fill the container
-		backgroundColor: "#f2f2f7", //"#d3d3d3",
+
 		// minWidth: "10%", // Minimum width
 
-		paddingHorizontal: 15, // Adjust padding as needed
 		paddingVertical: 5, // Vertical padding for top and bottom
-		borderRadius: 10, // Adjust for desired roundness
-		// Remove alignItems and justifyContent if not needed
+		paddingTop: 20, // Add extra padding to the top
+
 		margin: 5, // Optional margin for spacing around the box
 	},
 
 	sectionHeaderText: {
 		fontWeight: "bold",
-		fontSize: 60,
+		fontSize: 100,
 		textAlign: "center", // Ensure text is aligned to the left
 		alignSelf: "stretch", // Align self to the start (
 	},
 	itemTitle: {
 		fontWeight: "bold",
-		fontSize: 20,
+		fontSize: 30,
 		marginBottom: 5,
 	},
 	itemBody: {
@@ -214,7 +199,7 @@ const styles = StyleSheet.create({
 		padding: 0,
 	},
 	addButton: {
-		backgroundColor: "#007AFF", // Consistent button color
+		backgroundColor: "#B31D1D", // Consistent button color
 		width: 60,
 		height: 60,
 		borderRadius: 30,
@@ -231,10 +216,6 @@ const styles = StyleSheet.create({
 	charBox: {
 		backgroundColor: "#f0f0f0", // Gray background
 		borderRadius: 10,
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
 		elevation: 5,
 		padding: 10,
 		marginHorizontal: 10, // Add horizontal margin
@@ -280,14 +261,13 @@ const styles = StyleSheet.create({
 		alignSelf: "flex-start",
 	},
 	scrollbarItemText: {
-		fontSize: 44,
+		fontSize: 50,
 	},
 	logoutButton: {
 		position: "absolute", // Position it over everything else
-		top: 10, // Distance from the top of the container
-		marginTop: 12,
+		bottom: 10, // Distance from the top of the container
+
 		left: 10, // Distance from the left of the container
-		backgroundColor: "#ddd", // Light gray background for visibility
 		padding: 8, // Padding inside the button
 		borderRadius: 5, // Rounded corners
 		zIndex: 1, // Make sure it's above other elements
