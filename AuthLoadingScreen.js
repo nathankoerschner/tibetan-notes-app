@@ -1,21 +1,19 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { useAuth } from "./AuthContext";
 
 const AuthLoadingScreen = ({ navigation }) => {
-	const authContext = useAuth();
+	const { user, initializing } = useAuth(); // Destructure initializing and user directly
 
-	// Directly access initializing and user from the authContext
 	useEffect(() => {
-		if (!authContext) {
-			// If authContext is null, which means initializing is true, do nothing yet
+		if (initializing) {
+			// If still initializing, do nothing yet
 			return;
 		}
 
-		const { user } = authContext;
 		// Once initializing is complete, navigate based on the user's status
 		navigation.replace(user ? "Dictionary" : "Login");
-	}, [authContext, navigation]);
+	}, [user, initializing, navigation]);
 
 	return (
 		<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

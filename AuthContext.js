@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }) => {
 		user,
 		login,
 		logout,
+		initializing,
 	};
 
 	if (initializing) {
