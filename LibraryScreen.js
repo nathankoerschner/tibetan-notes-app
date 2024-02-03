@@ -111,7 +111,9 @@ function LibraryScreen({ navigation }) {
 					onPress={() => navigation.navigate("NewNote", { note: item })}
 				>
 					<Text style={styles.itemTitle}>{item.title}</Text>
-					<Text style={styles.itemBody}>{item.body}</Text>
+					<Text style={styles.itemBody} numberOfLines={1} ellipsizeMode="tail">
+						{item.body}
+					</Text>
 				</TouchableOpacity>
 			))}
 		</View>
@@ -215,7 +217,7 @@ const styles = StyleSheet.create({
 		borderRadius: 15, // Adjust for desired roundness
 	},
 	itemContainer: {
-		width: "100%", // Specific width
+		width: "85%", // Specific width
 		height: 100, // Fixed height
 		maxHeight: 100, // Max height
 		minHeight: 100, // Min height
