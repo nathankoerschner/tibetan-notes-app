@@ -60,13 +60,7 @@ function LibraryScreen({ navigation }) {
 		return () => subscriber();
 	}, [groupNotesByInitialCharacter, user.uid]);
 	const renderSection = useCallback(
-		({ item }) => (
-			<Section
-				section={item}
-				navigation={navigation}
-				style={{ marginVertical: "15%" }}
-			/>
-		),
+		({ item }) => <Section section={item} navigation={navigation} />,
 		[navigation]
 	);
 
@@ -123,7 +117,7 @@ function LibraryScreen({ navigation }) {
 		</View>
 	);
 
-	const HEIGHT_OF_SINGLE_NOTE = 115;
+	const HEIGHT_OF_SINGLE_NOTE = 120;
 	const HEIGHT_OF_SECTION_HEADER = 155;
 	const TOP_MARGIN = 20;
 	const BOTTOM_MARGIN = 20;
@@ -138,7 +132,8 @@ function LibraryScreen({ navigation }) {
 			HEIGHT_OF_SINGLE_NOTE * itemCount +
 			TOP_PADDING_HEIGHT +
 			BOTTOM_PADDING +
-			BOTTOM_MARGIN
+			BOTTOM_MARGIN +
+			10
 		);
 	};
 
@@ -221,6 +216,9 @@ const styles = StyleSheet.create({
 	},
 	itemContainer: {
 		width: "100%", // Specific width
+		height: 100, // Fixed height
+		maxHeight: 100, // Max height
+		minHeight: 100, // Min height
 		marginVertical: 10,
 		alignSelf: "center",
 		padding: 10,
@@ -232,12 +230,8 @@ const styles = StyleSheet.create({
 	},
 	sectionHeader: {
 		alignSelf: "flex-start", // Stretch to fill the container
-
-		// minWidth: "10%", // Minimum width
-
 		paddingVertical: 5, // Vertical padding for top and bottom
 		paddingTop: 20, // Add extra padding to the top
-
 		margin: 5, // Optional margin for spacing around the box
 	},
 
@@ -304,20 +298,13 @@ const styles = StyleSheet.create({
 		alignSelf: "center",
 		flexDirection: "row",
 		flexWrap: "wrap",
-		// Other styles as needed
-
 		top: 0,
 		bottom: 0,
 		justifyContent: "center",
 		alignItems: "center",
-		// width: "40%"
-		width: "80%", // Take full width of the sidebar
-		maxHeight: "100%", // Limit height to the sidebar
-		// Keep other styles as is,
-		// maxWidth: "50%",
+		width: "80%",
+		maxHeight: "100%",
 		maxHeight: "88%",
-
-		// Adjust the width as needed
 	},
 	scrollbarItem: {
 		padding: 13,
@@ -327,15 +314,15 @@ const styles = StyleSheet.create({
 
 	logoutButton: {
 		position: "absolute", // Position it over everything else
-		bottom: 10, // Distance from the top of the container
+		top: 12, // Distance from the top of the container
 
-		left: 10, // Distance from the left of the container
+		left: 8, // Distance from the left of the container
 		padding: 8, // Padding inside the button
 		borderRadius: 5, // Rounded corners
 		zIndex: 1, // Make sure it's above other elements
 	},
 	logoutButtonText: {
-		fontSize: 16, // Adjust as needed
+		fontSize: 12, // Adjust as needed
 	},
 });
 
