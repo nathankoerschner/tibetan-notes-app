@@ -63,7 +63,7 @@ export default function LoginScreen({ navigation }) {
 							value={password}
 							onChangeText={(text) => setPassword(text)}
 						/>
-						<Button title="Login" onPress={handleLogin} />
+						<Button style={styles.title} title="Login" onPress={handleLogin} />
 					</View>
 				)}
 			</View>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: "bold",
 		marginBottom: 20,
-		color: "#333", // Updated color for title
+		color: "#B31D1D", // Updated color for title
 	},
 
 	input: {
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
 		width: "100%",
 		height: 40,
 		borderColor: "#fff", // Updated border color
+		backgroundColor: "#fff", // Updated background color
 		borderWidth: 1,
 		borderRadius: 5, // Rounded corners for inputs
 		marginBottom: 15,

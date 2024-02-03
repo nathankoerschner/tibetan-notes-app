@@ -190,7 +190,8 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 	},
 	itemBody: {
-		fontSize: 16,
+		fontSize: 24,
+		fontWeight: "200",
 	},
 	buttonContainer: {
 		flexDirection: "row",
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		// width: "40%"
-		width: "70%", // Take full width of the sidebar
+		width: "80%", // Take full width of the sidebar
 		maxHeight: "100%", // Limit height to the sidebar
 		// Keep other styles as is,
 		// maxWidth: "50%",
@@ -257,7 +258,7 @@ const styles = StyleSheet.create({
 	},
 	scrollbarItem: {
 		padding: 13,
-		width: 50,
+		width: 60,
 		alignSelf: "flex-start",
 	},
 	scrollbarItemText: {
