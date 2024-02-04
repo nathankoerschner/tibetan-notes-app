@@ -46,7 +46,7 @@ export default function LoginScreen({ navigation }) {
 								style={styles.button}
 								onPress={() => navigation.navigate("Dictionary")}
 							>
-								<Text style={styles.buttonText}>Go To Dictionary</Text>
+								<Text style={styles.buttonText}>Open Dictionary</Text>
 							</TouchableOpacity>
 						</View>
 						<TouchableOpacity
