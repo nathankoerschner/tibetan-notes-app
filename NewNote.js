@@ -95,14 +95,14 @@ function NewNote({ navigation, route }) {
 			)}
 			<TextInput
 				style={styles.titleInput}
-				placeholder="Note Title"
+				placeholder="Word"
 				placeholderTextColor="#666"
 				value={noteTitle}
 				onChangeText={setNoteTitle}
 			/>
 			<TextInput
 				style={styles.bodyInput}
-				placeholder="Note Body"
+				placeholder="Meaning"
 				placeholderTextColor="#666"
 				value={noteBody}
 				multiline
@@ -113,9 +113,7 @@ function NewNote({ navigation, route }) {
 				style={styles.button}
 				onPress={isEditMode ? saveNote : addNote}
 			>
-				<Text style={styles.buttonText}>
-					{isEditMode ? "Save Note" : "Add Note"}
-				</Text>
+				<Text style={styles.buttonText}>{isEditMode ? "Save" : "Add"}</Text>
 			</TouchableOpacity>
 		</View>
 	);
@@ -156,7 +154,7 @@ const styles = StyleSheet.create({
 	button: {
 		width: "90%",
 		padding: 15,
-		backgroundColor: "#007AFF", // Consistent button color
+		backgroundColor: "#B31D1D", // Consistent button color
 		borderRadius: 5,
 		alignItems: "center",
 		justifyContent: "center",
@@ -177,7 +175,7 @@ const styles = StyleSheet.create({
 		padding: 5,
 	},
 	deleteButtonText: {
-		color: "#CC0000",
+		color: "#B31D1D",
 		fontSize: 14,
 	},
 });

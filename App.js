@@ -26,7 +26,7 @@ export default function App() {
 						component={LibraryScreen}
 						options={{ headerShown: false }}
 					/>
-					<Stack.Screen name="NewNote" component={NewNote} />
+					<Stack.Screen name="Note" component={NewNote} />
 				</Stack.Navigator>
 			</AuthProvider>
 		</NavigationContainer>

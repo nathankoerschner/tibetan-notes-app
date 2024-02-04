@@ -1,5 +1,6 @@
 module.exports = {
 	expo: {
+		icon: "./assets/icon.png",
 		name: "tibetan-notes-app",
 		slug: "tibetan-notes-app",
 		version: "1.0.0",
@@ -14,7 +15,7 @@ module.exports = {
 		splash: {
 			image: "./assets/splash.png",
 			resizeMode: "contain",
-			backgroundColor: "#ffffff",
+			backgroundColor: "#B31D1D",
 		},
 		assetBundlePatterns: ["**/*"],
 		ios: {

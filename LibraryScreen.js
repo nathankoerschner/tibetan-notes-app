@@ -108,7 +108,7 @@ function LibraryScreen({ navigation }) {
 				<TouchableOpacity
 					key={index}
 					style={styles.itemContainer}
-					onPress={() => navigation.navigate("NewNote", { note: item })}
+					onPress={() => navigation.navigate("Note", { note: item })}
 				>
 					<Text style={styles.itemTitle}>{item.title}</Text>
 					<Text style={styles.itemBody} numberOfLines={1} ellipsizeMode="tail">
@@ -177,7 +177,7 @@ function LibraryScreen({ navigation }) {
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
 					style={styles.addButton}
-					onPress={() => navigation.navigate("NewNote")}
+					onPress={() => navigation.navigate("Note")}
 				>
 					<Text style={styles.addButtonText}>+</Text>
 				</TouchableOpacity>

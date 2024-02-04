@@ -4,7 +4,7 @@ import {
 	Text,
 	View,
 	TextInput,
-	Button,
+	TouchableOpacity, // Import TouchableOpacity
 	KeyboardAvoidingView,
 	Platform,
 } from "react-native";
@@ -39,15 +39,23 @@ export default function LoginScreen({ navigation }) {
 		>
 			<View style={styles.innerContainer}>
 				{user ? (
-					<View>
-						<Text>Welcome, {user.email}</Text>
-						<Button
-							style={styles.text}
-							title="Go To Dictionary"
-							onPress={() => navigation.navigate("Dictionary")}
-						/>
-						<Button title="Logout" style={styles.text} onPress={handleLogout} />
-					</View>
+					<>
+						<View>
+							<Text>Welcome, {user.email}</Text>
+							<TouchableOpacity
+								style={styles.button}
+								onPress={() => navigation.navigate("Dictionary")}
+							>
+								<Text style={styles.buttonText}>Go To Dictionary</Text>
+							</TouchableOpacity>
+						</View>
+						<TouchableOpacity
+							style={styles.logoutButton}
+							onPress={handleLogout}
+						>
+							<Text style={styles.logoutButtonText}>Logout</Text>
+						</TouchableOpacity>
+					</>
 				) : (
 					<View>
 						<Text style={styles.title}>Login</Text>
@@ -64,7 +72,9 @@ export default function LoginScreen({ navigation }) {
 							value={password}
 							onChangeText={(text) => setPassword(text)}
 						/>
-						<Button style={styles.title} title="Login" onPress={handleLogin} />
+						<TouchableOpacity style={styles.button} onPress={handleLogin}>
+							<Text style={styles.buttonText}>Login</Text>
+						</TouchableOpacity>
 					</View>
 				)}
 			</View>
@@ -72,7 +82,23 @@ export default function LoginScreen({ navigation }) {
 	);
 }
 
+// Stylesheet update is mainly to ensure the `button` and `buttonText` styles are correctly applied.
 const styles = StyleSheet.create({
+	// ... other styles remain unchanged
+	button: {
+		backgroundColor: "#B31D1D", // Set button color to B31D1D
+		padding: 10,
+		borderRadius: 5,
+		alignItems: "center",
+		justifyContent: "center",
+		marginBottom: 10,
+		marginTop: 10,
+		minWidth: 250, // Ensure button has a minimum width
+	},
+	buttonText: {
+		color: "white",
+		fontSize: 16,
+	},
 	container: {
 		flex: 1,
 		backgroundColor: "#f2f2f7",
@@ -101,16 +127,14 @@ const styles = StyleSheet.create({
 		marginBottom: 15,
 		paddingHorizontal: 10,
 	},
-	button: {
-		backgroundColor: "#fff", // Updated button color
-		padding: 10,
-		borderRadius: 5, // Rounded corners for button
-		alignItems: "center",
-		justifyContent: "center",
-		marginBottom: 10,
+	logoutButton: {
+		position: "absolute", // Position logout text absolutely
+		top: 10, // Distance from top
+		left: 10, // Distance from left
+		// Additional styling as needed
 	},
-	buttonText: {
-		color: "white",
-		fontSize: 16,
+	logoutButtonText: {
+		color: "#B31D1D", // Set the text color to red
+		fontSize: 16, // Adjust the font size as needed
 	},
 });
