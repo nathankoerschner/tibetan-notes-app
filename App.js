@@ -20,7 +20,11 @@ export default function App() {
 						component={AuthLoadingScreen}
 						options={{ headerShown: false }}
 					/>
-					<Stack.Screen name="Login" component={LoginScreen} />
+					<Stack.Screen
+						name="Login"
+						component={LoginScreen}
+						options={{ headerShown: false }}
+					/>
 					<Stack.Screen
 						name="Dictionary"
 						component={LibraryScreen}
