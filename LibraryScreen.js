@@ -7,6 +7,8 @@ import { useAuth } from "./AuthContext";
 import tibetanSort from "./tibetan-sort-js";
 import styles from "./styles";
 
+import Section from "./components/Section";
+
 function LibraryScreen({ navigation }) {
 	const { user } = useAuth();
 	const [library, setLibrary] = useState([]);
@@ -87,25 +89,6 @@ function LibraryScreen({ navigation }) {
 						}}
 					>
 						{section.title}
-					</Text>
-				</TouchableOpacity>
-			))}
-		</View>
-	);
-	const Section = ({ section, navigation }) => (
-		<View style={styles.sectionContainer}>
-			<View style={styles.sectionHeader}>
-				<Text style={styles.sectionHeaderText}>{section.title}</Text>
-			</View>
-			{section.data.map((item, index) => (
-				<TouchableOpacity
-					key={index}
-					style={styles.itemContainer}
-					onPress={() => navigation.navigate("Note", { note: item })}
-				>
-					<Text style={styles.itemTitle}>{item.title}</Text>
-					<Text style={styles.itemBody} numberOfLines={1} ellipsizeMode="tail">
-						{item.body}
 					</Text>
 				</TouchableOpacity>
 			))}
