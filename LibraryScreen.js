@@ -1,11 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import {
-	StyleSheet,
-	View,
-	Text,
-	TouchableOpacity,
-	FlatList,
-} from "react-native";
+import { View, Text, TouchableOpacity, FlatList } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "./AuthContext";

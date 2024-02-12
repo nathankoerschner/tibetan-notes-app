@@ -1,10 +1,4 @@
-import {
-	StyleSheet,
-	View,
-	Text,
-	TouchableOpacity,
-	FlatList,
-} from "react-native";
+import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: "row", // Align children side by side
@@ -145,6 +139,7 @@ const styles = StyleSheet.create({
 	logoutButtonText: {
 		fontSize: 12, // Adjust as needed
 	},
+	// login screen
 });
 
 export default styles;
