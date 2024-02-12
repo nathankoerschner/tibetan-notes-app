@@ -61,10 +61,7 @@ function LibraryScreen({ navigation }) {
 		[navigation]
 	);
 
-	const scrollToSection = useCallback((sectionIndex, title) => {
-		// Set the current visible title based on the clicked section
-		// setCurrentVisibleItem(title);
-
+	const scrollToSection = useCallback((sectionIndex) => {
 		flatListRef.current?.scrollToIndex({
 			animated: false,
 			index: sectionIndex,
@@ -72,15 +69,14 @@ function LibraryScreen({ navigation }) {
 		});
 	}, []);
 
-	const HEIGHT_OF_SINGLE_NOTE = 120;
-	const HEIGHT_OF_SECTION_HEADER = 155;
-	const TOP_MARGIN = 20;
-	const BOTTOM_MARGIN = 20;
-	const TOP_PADDING_HEIGHT = 10;
-	const BOTTOM_PADDING = 50;
-
 	// Function to calculate the total height of a section based on the number of items it contains
 	const calculateSectionHeight = (itemCount) => {
+		const HEIGHT_OF_SINGLE_NOTE = 120;
+		const HEIGHT_OF_SECTION_HEADER = 155;
+		const TOP_MARGIN = 20;
+		const BOTTOM_MARGIN = 20;
+		const TOP_PADDING_HEIGHT = 10;
+		const BOTTOM_PADDING = 50;
 		return (
 			TOP_MARGIN +
 			HEIGHT_OF_SECTION_HEADER +
@@ -112,7 +108,11 @@ function LibraryScreen({ navigation }) {
 				<Text style={styles.logoutButtonText}>Settings</Text>
 			</TouchableOpacity>
 			<View style={styles.leftSidebar}>
-				<Scrollbar library={library} onItemPress={scrollToSection} />
+				<Scrollbar
+					items={library.map((section) => section.title)}
+					selectedItem={currentVisibleItem}
+					onItemPress={scrollToSection}
+				/>
 			</View>
 			<FlatList
 				ref={flatListRef}
