@@ -8,7 +8,7 @@ import tibetanSort from "./tibetan-sort-js";
 import styles from "./styles";
 
 import Section from "./components/Section";
-
+import Scrollbar from "./components/Scrollbar";
 function LibraryScreen({ navigation }) {
 	const { user } = useAuth();
 	const [library, setLibrary] = useState([]);
@@ -72,29 +72,6 @@ function LibraryScreen({ navigation }) {
 		});
 	}, []);
 
-	const renderScrollbar = () => (
-		<View style={styles.scrollbarContainer}>
-			{library.map((section, index) => (
-				<TouchableOpacity
-					key={index}
-					onPress={() => scrollToSection(index)}
-					style={styles.scrollbarItem}
-				>
-					<Text
-						style={{
-							color:
-								section.title === currentVisibleItem ? "#B31D1D" : "#636363", // Conditional text color
-							fontSize: 50,
-							fontWeight: section.title === currentVisibleItem ? "900" : "100",
-						}}
-					>
-						{section.title}
-					</Text>
-				</TouchableOpacity>
-			))}
-		</View>
-	);
-
 	const HEIGHT_OF_SINGLE_NOTE = 120;
 	const HEIGHT_OF_SECTION_HEADER = 155;
 	const TOP_MARGIN = 20;
@@ -134,7 +111,9 @@ function LibraryScreen({ navigation }) {
 			>
 				<Text style={styles.logoutButtonText}>Settings</Text>
 			</TouchableOpacity>
-			<View style={styles.leftSidebar}>{renderScrollbar()}</View>
+			<View style={styles.leftSidebar}>
+				<Scrollbar library={library} onItemPress={scrollToSection} />
+			</View>
 			<FlatList
 				ref={flatListRef}
 				data={library}
