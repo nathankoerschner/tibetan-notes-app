@@ -59,8 +59,6 @@ function LibraryScreen({ navigation }) {
 		[navigation]
 	);
 
-	const tibetanCharacters = "ཀཁགངཅཆཇཉཏཐདནཔཕབམཙཚཛཝཞཟའཡརལཤསཧཨ";
-
 	const scrollToSection = useCallback((sectionIndex, title) => {
 		// Set the current visible title based on the clicked section
 		// setCurrentVisibleItem(title);
