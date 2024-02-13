@@ -7,7 +7,7 @@ const Scrollbar = ({ items, selectedItem, onItemPress }) => {
 			{items.map((item, index) => (
 				<TouchableOpacity
 					key={index}
-					onPress={() => onItemPress(index)}
+					onPress={() => onItemPress({ item, index })}
 					style={styles.scrollbarItem}
 				>
 					<Text
