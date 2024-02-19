@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "./AuthContext";
-
+import tibetanSort from "./tibetan-sort-js";
 function NewNote({ navigation, route }) {
 	const { currentCollection } = route.params;
 	const existingNote = route.params?.note; // Get passed note, if any
@@ -27,6 +27,7 @@ function NewNote({ navigation, route }) {
 			// Optionally handle the case of empty title or body
 			return;
 		}
+		const rootLetter = tibetanSort.determineRootLetter(noteTitle) ?? "*";
 		firestore()
 			.collection("Users")
 			.doc(user.uid)
@@ -35,6 +36,7 @@ function NewNote({ navigation, route }) {
 				title: noteTitle.trim(),
 				body: noteBody,
 				collections: [currentCollection],
+				rootLetter, // Add this line
 			});
 
 		setNoteTitle(""); // Clear the title field
@@ -48,6 +50,7 @@ function NewNote({ navigation, route }) {
 			return;
 		}
 
+		const rootLetter = tibetanSort.determineRootLetter(noteTitle) ?? "*";
 		const collectionRef = firestore()
 			.collection("Users")
 			.doc(user.uid)
@@ -58,12 +61,14 @@ function NewNote({ navigation, route }) {
 			collectionRef.doc(existingNote.id).update({
 				title: noteTitle.trim(),
 				body: noteBody,
+				rootLetter, // Add this line
 			});
 		} else {
 			// Add new note
 			collectionRef.add({
 				title: noteTitle.trim(),
 				body: noteBody,
+				rootLetter, // Add this line
 			});
 		}
 
