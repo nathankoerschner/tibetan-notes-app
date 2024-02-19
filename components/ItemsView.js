@@ -6,20 +6,20 @@ import Section from "./Section"; // Adjust path as necessary
 const ItemsView = ({
 	library,
 	navigation,
-	focusedSection,
+	currentLetter,
 	handleViewableItemsChanged,
 }) => {
 	const flatListRef = useRef();
-	const scrollToSection = useCallback(
-		(sectionIndex) => {
+	const scrollToLetter = useCallback(
+		(letterIndex) => {
 			if (
-				typeof sectionIndex === "number" &&
-				sectionIndex >= 0 &&
-				sectionIndex < library.length
+				typeof letterIndex === "number" &&
+				letterIndex >= 0 &&
+				letterIndex < library.length
 			) {
 				flatListRef.current?.scrollToIndex({
 					animated: false,
-					index: sectionIndex,
+					index: letterIndex,
 					viewPosition: 0, // Adjust view position as needed
 				});
 			}
@@ -28,8 +28,8 @@ const ItemsView = ({
 	);
 
 	useEffect(() => {
-		scrollToSection(focusedSection);
-	}, [focusedSection, scrollToSection]);
+		scrollToLetter(currentLetter);
+	}, [currentLetter, scrollToLetter]);
 	// Assuming calculateSectionHeight is a utility function defined in this file or imported
 	const calculateSectionHeight = (itemCount) => {
 		const HEIGHT_OF_SINGLE_NOTE = 120;

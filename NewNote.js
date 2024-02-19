@@ -10,6 +10,7 @@ import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "./AuthContext";
 
 function NewNote({ navigation, route }) {
+	const { currentCollection } = route.params;
 	const existingNote = route.params?.note; // Get passed note, if any
 
 	const [noteTitle, setNoteTitle] = useState(existingNote?.title || "");
@@ -26,10 +27,15 @@ function NewNote({ navigation, route }) {
 			// Optionally handle the case of empty title or body
 			return;
 		}
-		firestore().collection("Users").doc(user.uid).collection("Notes").add({
-			title: noteTitle.trim(),
-			body: noteBody,
-		});
+		firestore()
+			.collection("Users")
+			.doc(user.uid)
+			.collection("Notes")
+			.add({
+				title: noteTitle.trim(),
+				body: noteBody,
+				collections: [currentCollection],
+			});
 
 		setNoteTitle(""); // Clear the title field
 		setNoteBody(""); // Clear the body field

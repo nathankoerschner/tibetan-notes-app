@@ -3,30 +3,25 @@ import { View, Text, TouchableOpacity, FlatList } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "./AuthContext";
-// Use require instead of import
 import tibetanSort from "./tibetan-sort-js";
 import styles from "./styles";
 
-import Section from "./components/Section";
 import Scrollbar from "./components/Scrollbar";
 import ItemsView from "./components/ItemsView";
 
-function LibraryScreen({ navigation }) {
+function LibraryScreen({ navigation, route }) {
 	const { user } = useAuth();
 	const [library, setLibrary] = useState([]);
-	const [currentVisibleItem, setCurrentVisibleItem] = useState(null);
+	const [currentLetter, setcurrentLetter] = useState(null);
+	const { currentCollection } = route.params;
 
 	const handleViewableItemsChanged = useCallback(({ viewableItems }) => {
 		if (viewableItems.length > 0) {
-			setCurrentVisibleItem({
+			setcurrentLetter({
 				id: viewableItems[0].item.title,
 			});
 		}
 	}, []);
-	const flatListRef = useRef();
-	if (!user) {
-		return null;
-	}
 
 	const groupNotesByInitialCharacter = useCallback((notes) => {
 		const grouped = notes.reduce((acc, note) => {
@@ -42,6 +37,7 @@ function LibraryScreen({ navigation }) {
 	}, []);
 
 	// Update the library state with the collected notes
+	// This should filter to the current user's notes in the current deck
 	useEffect(() => {
 		const subscriber = firestore()
 			.collection("Users")
@@ -70,21 +66,25 @@ function LibraryScreen({ navigation }) {
 			<View style={styles.leftSidebar}>
 				<Scrollbar
 					items={library.map((section) => section.title)}
-					selectedItem={currentVisibleItem?.id}
-					onItemPress={setCurrentVisibleItem}
+					selectedItem={currentLetter?.id}
+					onItemPress={setcurrentLetter}
 				/>
 			</View>
 			<ItemsView
 				library={library}
 				navigation={navigation}
-				focusedSection={currentVisibleItem?.index}
+				currentLetter={currentLetter?.index}
 				handleViewableItemsChanged={handleViewableItemsChanged}
 			/>
 
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
 					style={styles.addButton}
-					onPress={() => navigation.navigate("Note")}
+					onPress={() =>
+						navigation.navigate("Note", {
+							currentCollection: currentCollection,
+						})
+					}
 				>
 					<Text style={styles.addButtonText}>+</Text>
 				</TouchableOpacity>

@@ -29,6 +29,7 @@ export default function App() {
 						name="Dictionary"
 						component={LibraryScreen}
 						options={{ headerShown: false }}
+						initialParams={{ currentCollection: "allNotes" }}
 					/>
 					<Stack.Screen name="Note" component={NewNote} />
 				</Stack.Navigator>
