@@ -3,8 +3,10 @@
 A mobile app built with React-Native for the collection of Tibetan terms. Uses [tibetan-sort-js](https://github.com/buda-base/tibetan-sort-js) from [BDRC](https://www.bdrc.io/) to solve the problem of Tibetan alphabetical sort, which is not correctly implemented in most operating systems. 
 
 
-Built at the request of His Holiness the Drikung Kyabgön with collaborators for design and Tibetan translation. 
+Built at the request of His Holiness the Drikung Kyabgön with collaborators for design and Tibetan translation. Designed for tablet devices.
 
+
+## Screenshots
 
 
 ![IMG_0035](https://github.com/nathankoerschner/tibetan-notes-app/assets/58815433/d07fbcf9-b877-473c-89cd-60148a49a55c)
