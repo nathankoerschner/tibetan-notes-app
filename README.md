@@ -17,10 +17,10 @@ Built at the request of His Holiness the Drikung Kyabgön with collaborators for
 After pulling the repository, run `yarn install` to install the dependencies.
 Add `google-services.json` and `GoogleService-Info.plist` to the main directory for Firebase integration.
 
-Run `npx expo prebuild` to build the IOS app.
+Run `npx expo prebuild --platform ios --clean` to build the IOS app.
 Run `npx expo ios:run` to run the IOS app.
 (make sure that the latest IOS is installed with Xcode)
 
 ## Creating a build
 
-Run `eas build --profile preview --platform ios` to create a build for IOS.
+Run `eas build --profile development --platform ios` to create a build for IOS.
