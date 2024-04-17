@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	StyleSheet,
 	View,
 	TextInput,
 	TouchableOpacity,
 	Text,
-	FlatList,
 	ActivityIndicator,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
@@ -20,7 +19,7 @@ function NewNote({ navigation, route }) {
 	const [noteBody, setNoteBody] = useState(existingNote?.body || "");
 	const [collections, setCollections] = useState([]);
 	const [selectedCollections, setSelectedCollections] = useState(
-		existingNote?.collections || [currentCollection]
+		existingNote?.collections || [currentCollection].filter(Boolean)
 	);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isEditMode, setIsEditMode] = useState(!!existingNote);

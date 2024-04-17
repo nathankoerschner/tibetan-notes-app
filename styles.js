@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
 		alignSelf: "flex-start",
 	},
 
-	logoutButton: {
+	topLeftTextButton: {
 		position: "absolute", // Position it over everything else
 		top: 12, // Distance from the top of the container
 
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
 		borderRadius: 5, // Rounded corners
 		zIndex: 1, // Make sure it's above other elements
 	},
-	logoutButtonText: {
+	topLeftTextButtonText: {
 		fontSize: 12, // Adjust as needed
 	},
 	// login screen

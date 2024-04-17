@@ -7,6 +7,7 @@ import LibraryScreen from "./LibraryScreen";
 import { AuthProvider } from "./AuthContext";
 import LoginScreen from "./LoginScreen";
 import AuthLoadingScreen from "./AuthLoadingScreen";
+import HomePage from "./HomePage";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,11 @@ export default function App() {
 						initialParams={{ currentCollection: "allNotes" }}
 					/>
 					<Stack.Screen name="Note" component={NewNote} />
+					<Stack.Screen
+						name="HomePage"
+						component={HomePage}
+						options={{ headerShown: false }}
+					/>
 				</Stack.Navigator>
 			</AuthProvider>
 		</NavigationContainer>

@@ -12,12 +12,12 @@ import ItemsView from "./components/ItemsView";
 function LibraryScreen({ navigation, route }) {
 	const { user } = useAuth();
 	const [library, setLibrary] = useState([]);
-	const [currentLetter, setcurrentLetter] = useState(null);
+	const [currentLetter, setCurrentLetter] = useState(null);
 	const { currentCollection } = route.params;
 
 	const handleViewableItemsChanged = useCallback(({ viewableItems }) => {
 		if (viewableItems.length > 0) {
-			setcurrentLetter({
+			setCurrentLetter({
 				id: viewableItems[0].item.title,
 			});
 		}
@@ -36,38 +36,41 @@ function LibraryScreen({ navigation, route }) {
 			.map((key) => ({ title: key, data: grouped[key] }));
 	}, []);
 
-	// Update the library state with the collected notes
-	// This should filter to the current user's notes in the current deck
 	useEffect(() => {
-		const subscriber = firestore()
+		let query = firestore()
 			.collection("Users")
 			.doc(user.uid)
-			.collection("Notes")
-			.onSnapshot((querySnapshot) => {
-				const notesArray = querySnapshot.docs.map((doc) => ({
-					...doc.data(),
-					id: doc.id,
-				}));
-				notesArray.sort((a, b) => tibetanSort.compare(a.title, b.title));
-				setLibrary(groupNotesByInitialCharacter(notesArray));
-			});
+			.collection("Notes");
+
+		if (currentCollection) {
+			query = query.where("collections", "array-contains", currentCollection);
+		}
+
+		const subscriber = query.onSnapshot((querySnapshot) => {
+			const notesArray = querySnapshot.docs.map((doc) => ({
+				...doc.data(),
+				id: doc.id,
+			}));
+			notesArray.sort((a, b) => tibetanSort.compare(a.title, b.title));
+			setLibrary(groupNotesByInitialCharacter(notesArray));
+		});
 
 		return () => subscriber();
-	}, [groupNotesByInitialCharacter, user.uid]);
+	}, [groupNotesByInitialCharacter, user.uid, currentCollection]);
 
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity
 				onPress={() => navigation.navigate("Login")}
-				style={styles.logoutButton}
+				style={styles.topLeftTextButton}
 			>
-				<Text style={styles.logoutButtonText}>Settings</Text>
+				<Text style={styles.topLeftTextButtonText}>Settings</Text>
 			</TouchableOpacity>
 			<View style={styles.leftSidebar}>
 				<Scrollbar
 					items={library.map((section) => section.title)}
 					selectedItem={currentLetter?.id}
-					onItemPress={setcurrentLetter}
+					onItemPress={setCurrentLetter}
 				/>
 			</View>
 			<ItemsView

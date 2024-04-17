@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	StyleSheet,
 	Text,
 	View,
 	TextInput,
-	TouchableOpacity, // Import TouchableOpacity
+	TouchableOpacity,
 	KeyboardAvoidingView,
 	Platform,
+	ActivityIndicator,
 } from "react-native";
 import { useAuth } from "./AuthContext"; // Import the useAuth hook
 
@@ -14,6 +15,12 @@ export default function LoginScreen({ navigation }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const { login, logout, user } = useAuth(); // Use the useAuth hook to access authentication methods and user state
+
+	useEffect(() => {
+		if (user) {
+			navigation.navigate("HomePage");
+		}
+	}, [user, navigation]);
 
 	const handleLogin = async () => {
 		try {
@@ -26,11 +33,14 @@ export default function LoginScreen({ navigation }) {
 	const handleLogout = async () => {
 		try {
 			await logout();
-			// navigation.navigate("Login");
 		} catch (error) {
 			console.error("Logout failed:", error);
 		}
 	};
+
+	if (!user && !email && !password) {
+		return <ActivityIndicator size="large" color="#0000ff" />;
+	}
 
 	return (
 		<KeyboardAvoidingView
@@ -42,11 +52,12 @@ export default function LoginScreen({ navigation }) {
 					<>
 						<View>
 							<Text>Welcome, {user.email}</Text>
+
 							<TouchableOpacity
 								style={styles.button}
-								onPress={() => navigation.navigate("Dictionary")}
+								onPress={() => navigation.navigate("HomePage")}
 							>
-								<Text style={styles.buttonText}>Open Dictionary</Text>
+								<Text style={styles.buttonText}>Open Home Page</Text>
 							</TouchableOpacity>
 						</View>
 						<TouchableOpacity
@@ -63,14 +74,14 @@ export default function LoginScreen({ navigation }) {
 							style={styles.input}
 							placeholder="Email"
 							value={email}
-							onChangeText={(text) => setEmail(text)}
+							onChangeText={setEmail}
 						/>
 						<TextInput
 							style={styles.input}
 							placeholder="Password"
 							secureTextEntry
 							value={password}
-							onChangeText={(text) => setPassword(text)}
+							onChangeText={setPassword}
 						/>
 						<TouchableOpacity style={styles.button} onPress={handleLogin}>
 							<Text style={styles.buttonText}>Login</Text>
@@ -82,18 +93,15 @@ export default function LoginScreen({ navigation }) {
 	);
 }
 
-// Stylesheet update is mainly to ensure the `button` and `buttonText` styles are correctly applied.
 const styles = StyleSheet.create({
-	// ... other styles remain unchanged
 	button: {
-		backgroundColor: "#B31D1D", // Set button color to B31D1D
+		backgroundColor: "#B31D1D",
 		padding: 10,
 		borderRadius: 5,
 		alignItems: "center",
 		justifyContent: "center",
 		marginBottom: 10,
-		marginTop: 10,
-		minWidth: 250, // Ensure button has a minimum width
+		minWidth: 250,
 	},
 	buttonText: {
 		color: "white",
@@ -113,28 +121,26 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: "bold",
 		marginBottom: 20,
-		color: "#B31D1D", // Updated color for title
+		color: "#B31D1D",
 	},
-
 	input: {
-		minWidth: 250, // Set minimum width for the input
+		minWidth: 250,
 		width: "100%",
 		height: 40,
-		borderColor: "#fff", // Updated border color
-		backgroundColor: "#fff", // Updated background color
+		borderColor: "#fff",
+		backgroundColor: "#fff",
 		borderWidth: 1,
-		borderRadius: 5, // Rounded corners for inputs
+		borderRadius: 5,
 		marginBottom: 15,
 		paddingHorizontal: 10,
 	},
 	logoutButton: {
-		position: "absolute", // Position logout text absolutely
-		top: 10, // Distance from top
-		left: 10, // Distance from left
-		// Additional styling as needed
+		position: "absolute",
+		top: 10,
+		left: 10,
 	},
 	logoutButtonText: {
-		color: "#B31D1D", // Set the text color to red
-		fontSize: 16, // Adjust the font size as needed
+		color: "#B31D1D",
+		fontSize: 16,
 	},
 });
