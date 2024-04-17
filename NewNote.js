@@ -1,52 +1,67 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
 	StyleSheet,
 	View,
 	TextInput,
 	TouchableOpacity,
 	Text,
+	FlatList,
+	ActivityIndicator,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "./AuthContext";
 import tibetanSort from "./tibetan-sort-js";
+
 function NewNote({ navigation, route }) {
 	const { currentCollection } = route.params;
-	const existingNote = route.params?.note; // Get passed note, if any
+	const existingNote = route.params?.note;
 
 	const [noteTitle, setNoteTitle] = useState(existingNote?.title || "");
 	const [noteBody, setNoteBody] = useState(existingNote?.body || "");
+	const [collections, setCollections] = useState([]);
+	const [selectedCollections, setSelectedCollections] = useState(
+		existingNote?.collections || [currentCollection]
+	);
+	const [isLoading, setIsLoading] = useState(true);
 	const [isEditMode, setIsEditMode] = useState(!!existingNote);
-	const { user, logout } = useAuth();
+	const { user } = useAuth();
 
-	if (!user) {
-		return null;
-	}
+	useEffect(() => {
+		if (user) {
+			const collectionRef = firestore()
+				.collection("Users")
+				.doc(user.uid)
+				.collection("Collections");
 
-	const addNote = () => {
-		if (noteTitle.trim().length === 0) {
-			// Optionally handle the case of empty title or body
-			return;
+			collectionRef
+				.get()
+				.then((querySnapshot) => {
+					const userCollections = querySnapshot.docs.map((doc) => ({
+						id: doc.id,
+						title: doc.data().title,
+					}));
+					setCollections(userCollections);
+					setIsLoading(false);
+				})
+				.catch((error) => {
+					console.error("Error fetching collections: ", error);
+					setIsLoading(false);
+				});
 		}
-		const rootLetter = tibetanSort.determineRootLetter(noteTitle) ?? "*";
-		firestore()
-			.collection("Users")
-			.doc(user.uid)
-			.collection("Notes")
-			.add({
-				title: noteTitle.trim(),
-				body: noteBody,
-				collections: [currentCollection],
-				rootLetter, // Add this line
-			});
+	}, [user]);
 
-		setNoteTitle(""); // Clear the title field
-		setNoteBody(""); // Clear the body field
-		navigation.goBack(); // Navigate back to the Library screen
+	const toggleCollection = (collectionId) => {
+		if (selectedCollections.includes(collectionId)) {
+			setSelectedCollections(
+				selectedCollections.filter((id) => id !== collectionId)
+			);
+		} else {
+			setSelectedCollections([...selectedCollections, collectionId]);
+		}
 	};
 
-	const saveNote = () => {
+	const addOrUpdateNote = (isNew) => {
 		if (noteTitle.trim().length === 0) {
-			// Optionally handle the case of empty title or body
 			return;
 		}
 
@@ -56,50 +71,37 @@ function NewNote({ navigation, route }) {
 			.doc(user.uid)
 			.collection("Notes");
 
-		if (existingNote) {
-			// Update existing note
-			collectionRef.doc(existingNote.id).update({
-				title: noteTitle.trim(),
-				body: noteBody,
-				rootLetter, // Add this line
-			});
+		const data = {
+			title: noteTitle.trim(),
+			body: noteBody,
+			collections: selectedCollections,
+			rootLetter,
+		};
+
+		if (isNew) {
+			collectionRef.add(data);
 		} else {
-			// Add new note
-			collectionRef.add({
-				title: noteTitle.trim(),
-				body: noteBody,
-				rootLetter, // Add this line
-			});
+			collectionRef.doc(existingNote.id).update(data);
 		}
 
 		setNoteTitle("");
 		setNoteBody("");
+		setSelectedCollections([]);
 		navigation.goBack();
 	};
 
-	const deleteNote = () => {
-		// Only proceed if in edit mode and a note ID is available
-		if (isEditMode && existingNote?.id) {
-			firestore()
-				.collection("Users")
-				.doc(user.uid)
-				.collection("Notes")
-				.doc(existingNote.id)
-				.delete()
-				.then(() => {
-					navigation.goBack(); // Navigate back after deletion
-				})
-				.catch((error) => {
-					console.error("Error deleting note: ", error);
-					// Optionally handle the error, e.g., show an alert
-				});
-		}
-	};
+	if (!user || isLoading) {
+		return <ActivityIndicator size="large" color="#0000ff" />;
+	}
+
 	return (
 		<View style={styles.container}>
 			{isEditMode && (
 				<View style={styles.header}>
-					<TouchableOpacity style={styles.deleteButton} onPress={deleteNote}>
+					<TouchableOpacity
+						style={styles.deleteButton}
+						onPress={() => addOrUpdateNote(false)}
+					>
 						<Text style={styles.deleteButtonText}>Delete</Text>
 					</TouchableOpacity>
 				</View>
@@ -120,9 +122,27 @@ function NewNote({ navigation, route }) {
 				numberOfLines={4}
 				onChangeText={setNoteBody}
 			/>
+			<View style={styles.collectionContainer}>
+				{collections.map((collection) => (
+					<TouchableOpacity
+						key={collection.id}
+						style={[
+							styles.tag,
+							{
+								backgroundColor: selectedCollections.includes(collection.id)
+									? "#B31D1D"
+									: "#ddd",
+							},
+						]}
+						onPress={() => toggleCollection(collection.id)}
+					>
+						<Text style={styles.tagText}>{collection.title}</Text>
+					</TouchableOpacity>
+				))}
+			</View>
 			<TouchableOpacity
 				style={styles.button}
-				onPress={isEditMode ? saveNote : addNote}
+				onPress={() => addOrUpdateNote(!isEditMode)}
 			>
 				<Text style={styles.buttonText}>{isEditMode ? "Save" : "Add"}</Text>
 			</TouchableOpacity>
@@ -152,7 +172,7 @@ const styles = StyleSheet.create({
 	},
 	bodyInput: {
 		width: "90%",
-		height: 150, // Larger height for body input
+		height: 150,
 		borderColor: "#fff",
 		borderWidth: 1,
 		borderRadius: 5,
@@ -165,7 +185,7 @@ const styles = StyleSheet.create({
 	button: {
 		width: "90%",
 		padding: 15,
-		backgroundColor: "#B31D1D", // Consistent button color
+		backgroundColor: "#B31D1D",
 		borderRadius: 5,
 		alignItems: "center",
 		justifyContent: "center",
@@ -175,7 +195,6 @@ const styles = StyleSheet.create({
 		color: "white",
 		fontSize: 16,
 	},
-
 	header: {
 		width: "90%",
 		alignSelf: "center",
@@ -187,6 +206,23 @@ const styles = StyleSheet.create({
 	},
 	deleteButtonText: {
 		color: "#B31D1D",
+		fontSize: 14,
+	},
+	collectionContainer: {
+		flexDirection: "row",
+		width: "90%",
+		marginBottom: 15,
+		flexWrap: "wrap",
+		alignItems: "flex-start",
+		justifyContent: "flex-start",
+	},
+	tag: {
+		padding: 8,
+		borderRadius: 5,
+		margin: 5,
+	},
+	tagText: {
+		color: "white",
 		fontSize: 14,
 	},
 });
