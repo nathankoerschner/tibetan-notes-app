@@ -58,17 +58,17 @@ function HomePage() {
 				{collections.map((collection) => (
 					<TouchableOpacity
 						key={collection.id}
-						style={styles.collectionItem}
+						style={styles.blueCollectionItem}
 						onPress={() => handlePressCollection(collection.id)}
 					>
 						<Text style={styles.collectionText}>{collection.title}</Text>
 					</TouchableOpacity>
 				))}
 				<TouchableOpacity
-					style={styles.collectionItem}
+					style={styles.redCollectionItem}
 					onPress={() => handlePressCollection()}
 				>
-					<Text style={styles.collectionText}>General Dictionary</Text>
+					<Text style={styles.collectionText}>All Words</Text>
 				</TouchableOpacity>
 			</ScrollView>
 		</View>
@@ -94,7 +94,13 @@ const styles = StyleSheet.create({
 	collectionContainer: {
 		padding: 20,
 	},
-	collectionItem: {
+	blueCollectionItem: {
+		backgroundColor: "#0F2497",
+		padding: 20,
+		borderRadius: 5,
+		marginBottom: 10,
+	},
+	redCollectionItem: {
 		backgroundColor: "#B31D1D",
 		padding: 20,
 		borderRadius: 5,
@@ -105,6 +111,7 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		textAlign: "center",
 	},
+
 	topLeftTextButton: {
 		position: "absolute", // Position it over everything else
 		top: 12, // Distance from the top of the container
