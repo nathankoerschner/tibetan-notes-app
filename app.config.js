@@ -1,7 +1,7 @@
 module.exports = {
 	expo: {
 		icon: "./assets/icon.png",
-		name: "མིང་ཚིག་བཟོ་སྒྲིག་གཉེན་ཆས།",
+		name: "Tibetan Dictionary",
 		slug: "tibetan-notes-app",
 		version: "1.0.0",
 		build: {
