@@ -19,7 +19,7 @@ function NewNote({ navigation, route }) {
 	const [noteBody, setNoteBody] = useState(existingNote?.body || "");
 	const [collections, setCollections] = useState([]);
 	const [selectedCollections, setSelectedCollections] = useState(
-		existingNote?.collections || [currentCollection].filter(Boolean)
+		existingNote?.collections || [currentCollection]
 	);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isEditMode, setIsEditMode] = useState(!!existingNote);
@@ -85,7 +85,7 @@ function NewNote({ navigation, route }) {
 
 		setNoteTitle("");
 		setNoteBody("");
-		setSelectedCollections([]);
+		setSelectedCollections(selectedCollections);
 		navigation.goBack();
 	};
 

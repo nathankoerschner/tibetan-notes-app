@@ -38,10 +38,6 @@ export default function LoginScreen({ navigation }) {
 		}
 	};
 
-	if (!user && !email && !password) {
-		return <ActivityIndicator size="large" color="#0000ff" />;
-	}
-
 	return (
 		<KeyboardAvoidingView
 			style={styles.container}
