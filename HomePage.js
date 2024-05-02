@@ -23,11 +23,11 @@ function HomePage() {
 
 	useEffect(() => {
 		if (user) {
-			const collectionRef = firestore()
+			const collectionsRef = firestore()
 				.collection("Users")
 				.doc(user.uid)
 				.collection("Collections");
-			collectionRef
+			collectionsRef
 				.get()
 				.then((querySnapshot) => {
 					const userCollections = querySnapshot.docs.map((doc) => ({
@@ -42,7 +42,7 @@ function HomePage() {
 					setLoading(false);
 				});
 		}
-	}, [user]);
+	}, [user, collections]);
 
 	const handlePressCollection = (collectionId = null) => {
 		navigation.navigate("Dictionary", { currentCollection: collectionId });
@@ -53,17 +53,14 @@ function HomePage() {
 			alert("Please enter a title for the collection.");
 			return;
 		}
-		const collectionRef = firestore()
+		const collectionsRef = firestore()
 			.collection("Users")
 			.doc(user.uid)
 			.collection("Collections");
-		collectionRef
+		collectionsRef
 			.add({ title: newCollectionTitle })
 			.then(() => {
-				setCollections([
-					...collections,
-					{ title: newCollectionTitle, id: new Date().toISOString() },
-				]);
+				setCollections([...collections]);
 				setNewCollectionTitle("");
 				setModalVisible(false);
 			})
