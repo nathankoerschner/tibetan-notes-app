@@ -18968,15 +18968,15 @@ const wordList = `ཀ་ཀུ་སྟ་a river
 ཨོང་རས་wick of a lamp
 ཨོང་ལོག་ptarmigan
 ཨོས་སྐོ་chin`
-	.split("\n")
-	.map((line) => line.split(/(?<![a-z ])(?=[a-z ])/))
-	.forEach((x) =>
-		firestore()
-			.collection("Users")
-			.doc(AXGgorHEUUVYsZPZo0pAezl9ys53)
-			.collection("Notes")
-			.add({
-				title: x[0].trim(),
-				body: x[1],
-			})
-	);
+  .split("\n")
+  .map((line) => line.split(/(?<![a-z ])(?=[a-z ])/))
+  .forEach((x) =>
+    firestore()
+      .collection("Users")
+      .doc(AXGgorHEUUVYsZPZo0pAezl9ys53)
+      .collection("Notes")
+      .add({
+        title: x[0].trim(),
+        body: x[1],
+      }),
+  );

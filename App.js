@@ -12,34 +12,34 @@ import HomePage from "./HomePage";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-	return (
-		<NavigationContainer>
-			<AuthProvider>
-				<Stack.Navigator initialRouteName="Login">
-					<Stack.Screen
-						name="AuthLoading"
-						component={AuthLoadingScreen}
-						options={{ headerShown: false }}
-					/>
-					<Stack.Screen
-						name="Login"
-						component={LoginScreen}
-						options={{ headerShown: false }}
-					/>
-					<Stack.Screen
-						name="Dictionary"
-						component={LibraryScreen}
-						options={{ headerShown: false }}
-						initialParams={{ currentCollection: "allNotes" }}
-					/>
-					<Stack.Screen name="Note" component={NewNote} />
-					<Stack.Screen
-						name="HomePage"
-						component={HomePage}
-						options={{ headerShown: false }}
-					/>
-				</Stack.Navigator>
-			</AuthProvider>
-		</NavigationContainer>
-	);
+  return (
+    <NavigationContainer>
+      <AuthProvider>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            name="AuthLoading"
+            component={AuthLoadingScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Dictionary"
+            component={LibraryScreen}
+            options={{ headerShown: false }}
+            initialParams={{ currentCollection: "allNotes" }}
+          />
+          <Stack.Screen name="Note" component={NewNote} />
+          <Stack.Screen
+            name="HomePage"
+            component={HomePage}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </AuthProvider>
+    </NavigationContainer>
+  );
 }
