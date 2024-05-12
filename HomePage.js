@@ -71,13 +71,13 @@ function HomePage() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
       <TouchableOpacity
         onPress={() => navigation.navigate("Login")}
         style={styles.topLeftTextButton}
       >
         <Text style={styles.topLeftTextButtonText}>Settings</Text>
       </TouchableOpacity>
-      <View style={styles.header}>
         <Text style={styles.headerTitle}>Collections</Text>
         <TouchableOpacity
           style={styles.addButton}
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 24,
-    marginTop: 12,
+    marginTop: 22,
     backgroundColor: "#FFFFFF",
     borderBottomWidth: 1,
     borderBottomColor: "#F0F0F2",
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
+    margin: 10,
     fontWeight: "bold",
   },
   collectionContainer: {
@@ -170,13 +171,15 @@ const styles = StyleSheet.create({
   topLeftTextButton: {
     position: "absolute",
     top: 12,
-    left: 8,
+    left: 24,
     padding: 8,
+    marginBottom: 10,
     borderRadius: 5,
     zIndex: 1,
   },
   topLeftTextButtonText: {
     fontSize: 12,
+    textAlign: "center",
   },
   addButton: {
     backgroundColor: "#B31D1D",

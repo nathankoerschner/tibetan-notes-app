@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
 	},
 	topLeftTextButtonText: {
 		fontSize: 12, // Adjust as needed
+        marginTop: 20,
 	},
 	// login screen
 });
