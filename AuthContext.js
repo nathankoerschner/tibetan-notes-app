@@ -37,12 +37,29 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   };
+  const loginAnonymously = async () => {
+    try {
+      await auth().signInAnonymously();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createUser = async (email, password) => {
+    try {
+      await auth().createUserWithEmailAndPassword(email, password);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const value = {
     user,
     login,
     logout,
     initializing,
+    loginAnonymously,
+    createUser,
   };
 
   if (initializing) {
