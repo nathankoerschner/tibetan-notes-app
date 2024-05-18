@@ -102,8 +102,8 @@ export default function LoginScreen({ navigation }) {
             <TouchableOpacity style={styles.button} onPress={handleCreateUser}>
               <Text style={styles.buttonText}>Create Account</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleLoginAnonymously}>
-              <Text style={styles.buttonText}>Use Without An Account</Text>
+            <TouchableOpacity onPress={handleLoginAnonymously}>
+              <Text style={styles.logoutButtonText}>Use Without An Account</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -161,5 +161,6 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: "#B31D1D",
     fontSize: 16,
+    textAlign: "center",
   },
 });
