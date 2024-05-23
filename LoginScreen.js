@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  ActivityIndicator,
+  Alert,
 } from "react-native";
 import { useAuth } from "./AuthContext"; // Import the useAuth hook
 
@@ -55,6 +55,31 @@ export default function LoginScreen({ navigation }) {
     }
   };
 
+  const handleDeleteUser = async () => {
+    Alert.prompt(
+      "Confirm Deletion",
+      'Type "DELETE" to confirm',
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: async (confirm) => {
+            if (confirm === "DELETE") {
+              try {
+                await user.delete();
+              } catch (error) {
+                console.error("Delete User failed:", error);
+              }
+            }
+          },
+        },
+      ],
+      "plain-text",
+    );
+  };
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -78,6 +103,12 @@ export default function LoginScreen({ navigation }) {
               onPress={handleLogout}
             >
               <Text style={styles.logoutButtonText}>Logout</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.deleteUserButton}
+              onPress={handleDeleteUser}
+            >
+              <Text style={styles.deleteUserButtonText}>Delete Account</Text>
             </TouchableOpacity>
           </>
         ) : (
@@ -103,7 +134,9 @@ export default function LoginScreen({ navigation }) {
               <Text style={styles.buttonText}>Create Account</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleLoginAnonymously}>
-              <Text style={styles.logoutButtonText}>Use Without An Account</Text>
+              <Text style={styles.logoutButtonText}>
+                Use Without An Account
+              </Text>
             </TouchableOpacity>
           </View>
         )}
@@ -159,6 +192,16 @@ const styles = StyleSheet.create({
     left: 10,
   },
   logoutButtonText: {
+    color: "#B31D1D",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  deleteUserButton: {
+    position: "absolute",
+    bottom: 10,
+    left: 10,
+  },
+  deleteUserButtonText: {
     color: "#B31D1D",
     fontSize: 16,
     textAlign: "center",

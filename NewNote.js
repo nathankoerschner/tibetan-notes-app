@@ -89,6 +89,21 @@ function NewNote({ navigation, route }) {
 		navigation.goBack();
 	};
 
+	const deleteNote = () => {
+		if (existingNote) {
+			const collectionRef = firestore()
+				.collection("Users")
+				.doc(user.uid)
+				.collection("Notes");
+
+			collectionRef.doc(existingNote.id).delete().then(() => {
+				navigation.goBack();
+			}).catch((error) => {
+				console.error("Error deleting note: ", error);
+			});
+		}
+	};
+
 	if (!user || isLoading) {
 		return <ActivityIndicator size="large" color="#0000ff" />;
 	}
@@ -99,7 +114,7 @@ function NewNote({ navigation, route }) {
 				<View style={styles.header}>
 					<TouchableOpacity
 						style={styles.deleteButton}
-						onPress={() => addOrUpdateNote(false)}
+						onPress={deleteNote}
 					>
 						<Text style={styles.deleteButtonText}>Delete</Text>
 					</TouchableOpacity>
