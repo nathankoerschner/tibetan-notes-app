@@ -5,60 +5,28 @@ from firebase_admin import credentials, firestore
 
 # Initialize Firebase Admin
 cred = credentials.Certificate(
-    "/Users/nathankoerschner/Downloads/tibetan-notes-app-firebase-adminsdk-o4iho-542211060c.json"
+    "/Users/nathankoerschner/tibetan-notes-app-firebase-adminsdk-o4iho-fcdb720637.json"
 )
 firebase_admin.initialize_app(cred)
 
 # Reference to Firestore database
 db = firestore.client()
 
+# Add to Firestore
+doc_ref = (
+    db.collection("Users").document("Kjuiw0j0pfVJlv6sEvulPakQZ3q2").collection("Notes")
+)
 
-word_list = """
-ཀa
-ཁb
-གc
-ངd
-ཅe
-ཆf
-ཇg
-ཉh
-ཏi
-ཐj
-དk
-ནl
-པm
-ཕn
-བo
-མp
-ཙq
-ཚr
-ཛs
-ཝt
-ཞu
-ཟv
-འw
-ཡx
-རy
-ལz
-ཤza
-སzb
-ཧzc
-ཨzd
-1z
-2z
-"""
+# read from words.csv
 
-# Split the string into lines and then split each line using the regex
-for line in word_list.split("\n"):
-    parts = re.split(r"(?<![a-z ])(?=[a-z ])", line, maxsplit=1)
-    print(parts)
-    if len(parts) == 2:
-        title, body = parts
+with open("words.csv", "r") as file:
+    lines = file.readlines()
 
-        # Add to Firestore
-        doc_ref = (
-            db.collection("Users")
-            .document("AXGgorHEUUVYsZPZo0pAezl9ys53")
-            .collection("Notes")
-        )
-        doc_ref.add({"title": title.strip(), "body": body})
+    for line in lines:
+        title, body, source = line.split(",", 2)
+        # append "source" to the body
+
+        body = body + "\n\nSource: " + source
+
+        doc_ref.add({"title": title.strip(), "body": body, "collections": ['BwmEvCb5Pb8SoMayLqWS']})
+        print(f"Added {title}")
