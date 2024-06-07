@@ -4,14 +4,17 @@ import {
   View,
   Text,
   TouchableOpacity,
+  FlatList,
   ScrollView,
   Modal,
   TextInput,
   Button,
+  useWindowDimensions,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "./AuthContext";
 import { useNavigation } from "@react-navigation/native";
+import PechaCard from "./components/PechaCard";
 
 function HomePage() {
   const { user } = useAuth();
@@ -20,6 +23,8 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [newCollectionTitle, setNewCollectionTitle] = useState("");
+  const { width, height } = useWindowDimensions();
+  const isPortrait = height >= width;
 
   useEffect(() => {
     if (user) {
@@ -42,10 +47,15 @@ function HomePage() {
           setLoading(false);
         });
     }
-  }, [user, collections]);
+  }, [user]);
 
   const handlePressCollection = (collectionId = null) => {
-    navigation.navigate("Dictionary", { currentCollection: collectionId });
+    if (collectionId === "all-words") {
+      // Navigate to a special screen that shows all notes across all collections
+      navigation.navigate("Dictionary", { currentCollection: null });
+    } else {
+      navigation.navigate("Dictionary", { currentCollection: collectionId });
+    }
   };
 
   const handleAddCollection = () => {
@@ -60,7 +70,7 @@ function HomePage() {
     collectionsRef
       .add({ title: newCollectionTitle })
       .then(() => {
-        setCollections([...collections]);
+        setCollections([...collections, { id: Math.random().toString(), title: newCollectionTitle }]);
         setNewCollectionTitle("");
         setModalVisible(false);
       })
@@ -69,15 +79,26 @@ function HomePage() {
       });
   };
 
+  const renderPechaCard = ({ item }) => (
+    <TouchableOpacity
+      style={styles.pechaCard}
+      onPress={() => handlePressCollection(item.id)}
+    >
+      <PechaCard title={item.title} hexColor={item.hexColor} />
+    </TouchableOpacity>
+  );
+
+  const allWordsPecha = { id: "all-words", title: "All Words", hexColor: "#B31D1D" };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Login")}
-        style={styles.topLeftTextButton}
-      >
-        <Text style={styles.topLeftTextButtonText}>Settings</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Login")}
+          style={styles.topLeftTextButton}
+        >
+          <Text style={styles.topLeftTextButtonText}>Settings</Text>
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Collections</Text>
         <TouchableOpacity
           style={styles.addButton}
@@ -86,23 +107,27 @@ function HomePage() {
           <Text style={styles.addButtonText}>Add Collection</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.collectionContainer}>
-        {collections.map((collection) => (
-          <TouchableOpacity
-            key={collection.id}
-            style={styles.blueCollectionItem}
-            onPress={() => handlePressCollection(collection.id)}
-          >
-            <Text style={styles.collectionText}>{collection.title}</Text>
-          </TouchableOpacity>
-        ))}
-        <TouchableOpacity
-          style={styles.redCollectionItem}
-          onPress={() => handlePressCollection()}
-        >
-          <Text style={styles.collectionText}>All Words</Text>
-        </TouchableOpacity>
-      </ScrollView>
+      {isPortrait ? (
+        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+          {[...collections, allWordsPecha].map((item) => (
+            <TouchableOpacity
+              style={styles.pechaCard}
+              key={item.id}
+              onPress={() => handlePressCollection(item.id)}
+            >
+              <PechaCard title={item.title} hexColor={item.hexColor} />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      ) : (
+        <FlatList
+          data={[...collections, allWordsPecha]}
+          renderItem={renderPechaCard}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          contentContainerStyle={styles.collectionContainer}
+        />
+      )}
       <Modal
         animationType="slide"
         transparent={true}
@@ -129,6 +154,10 @@ function HomePage() {
 }
 
 const styles = StyleSheet.create({
+  pechaCard: {
+    flex: 1,
+    margin: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: "#FAFAFA",
@@ -149,24 +178,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   collectionContainer: {
-    padding: 20,
+    paddingHorizontal: 10,
   },
-  blueCollectionItem: {
-    backgroundColor: "#0F2497",
-    padding: 20,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  redCollectionItem: {
-    backgroundColor: "#B31D1D",
-    padding: 20,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  collectionText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    textAlign: "center",
+  scrollViewContainer: {
+    paddingHorizontal: 10,
+    alignItems: "center",
   },
   topLeftTextButton: {
     position: "absolute",
@@ -220,3 +236,4 @@ const styles = StyleSheet.create({
 });
 
 export default HomePage;
+
