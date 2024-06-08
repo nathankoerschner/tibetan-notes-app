@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { Path, G, Rect, Mask, Text, TSpan, Defs } from "react-native-svg";
 
-function PechaCard({ title = "Unnamed", subtitle = "", hexColor = "#0F2497" }) {
+function PechaCard({ title = "Unnamed", description = "", hexColor = "#0F2497" }) {
   return (
     <Svg
       width={553}
@@ -64,7 +64,7 @@ function PechaCard({ title = "Unnamed", subtitle = "", hexColor = "#0F2497" }) {
           letterSpacing="0em"
         >
           <TSpan x="50%" y={114.069}>
-            {subtitle}
+            {description}
           </TSpan>
         </Text>
         <Path stroke="#D4AF37" strokeWidth={2} d="M436 41H484V138H436z" />

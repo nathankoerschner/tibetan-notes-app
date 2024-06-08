@@ -23,6 +23,7 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [newCollectionTitle, setNewCollectionTitle] = useState("");
+  const [newCollectionDescription, setNewCollectionDescription] = useState("");
   const { width, height } = useWindowDimensions();
   const isPortrait = height >= width;
 
@@ -38,6 +39,7 @@ function HomePage() {
           const userCollections = querySnapshot.docs.map((doc) => ({
             id: doc.id,
             title: doc.data().title,
+            description: doc.data().description,
           }));
           setCollections(userCollections);
           setLoading(false);
@@ -68,10 +70,14 @@ function HomePage() {
       .doc(user.uid)
       .collection("Collections");
     collectionsRef
-      .add({ title: newCollectionTitle })
+      .add({ title: newCollectionTitle, description: newCollectionDescription })
       .then(() => {
-        setCollections([...collections, { id: Math.random().toString(), title: newCollectionTitle }]);
+        setCollections([
+          ...collections,
+          { id: Math.random().toString(), title: newCollectionTitle, description: newCollectionDescription },
+        ]);
         setNewCollectionTitle("");
+                setNewCollectionDescription("");
         setModalVisible(false);
       })
       .catch((error) => {
@@ -84,11 +90,16 @@ function HomePage() {
       style={styles.pechaCard}
       onPress={() => handlePressCollection(item.id)}
     >
-      <PechaCard title={item.title} hexColor={item.hexColor} />
+      <PechaCard title={item.title} description={item.description} hexColor={item.hexColor} />
     </TouchableOpacity>
   );
 
-  const allWordsPecha = { id: "all-words", title: "All Words", hexColor: "#B31D1D" };
+  const allWordsPecha = {
+    id: "all-words",
+    title: "All Words",
+        description: "All words in the dictionary",
+    hexColor: "#B31D1D",
+  };
 
   return (
     <View style={styles.container}>
@@ -115,7 +126,7 @@ function HomePage() {
               key={item.id}
               onPress={() => handlePressCollection(item.id)}
             >
-              <PechaCard title={item.title} hexColor={item.hexColor} />
+              <PechaCard title={item.title} description={item.description} hexColor={item.hexColor} />
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -143,6 +154,12 @@ function HomePage() {
               style={styles.input}
               onChangeText={setNewCollectionTitle}
               value={newCollectionTitle}
+            />
+            <TextInput
+              placeholder="Collection Description"
+              style={styles.input}
+              onChangeText={setNewCollectionDescription}
+              value={newCollectionDescription}
             />
             <Button title="Add" onPress={handleAddCollection} />
             <Button title="Cancel" onPress={() => setModalVisible(false)} />
@@ -236,4 +253,3 @@ const styles = StyleSheet.create({
 });
 
 export default HomePage;
-
