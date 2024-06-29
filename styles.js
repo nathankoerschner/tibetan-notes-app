@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
   },
   leftSidebar: {
     backgroundColor: "white", // Gray background
-    width: "30%", // Adjust width as needed
+        paddingLeft: 15,
+    width: "20%", // Adjust width as needed
     justifyContent: "center",
     alignItems: "center",
     borderColor: "#fff", // Example border color
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     borderRadius: 15, // Adjust for desired roundness
   },
   itemContainer: {
-    width: "85%", // Specific width
+    width: "88%", // Specific width
     height: 100, // Fixed height
     maxHeight: 100, // Max height
     minHeight: 100, // Min height

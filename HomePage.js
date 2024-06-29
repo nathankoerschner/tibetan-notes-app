@@ -4,17 +4,18 @@ import {
   View,
   Text,
   TouchableOpacity,
-  FlatList,
   ScrollView,
+  FlatList,
   Modal,
   TextInput,
   Button,
   useWindowDimensions,
+  SafeAreaView,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import { useAuth } from "./AuthContext";
 import { useNavigation } from "@react-navigation/native";
-import PechaCard from "./components/PechaCard";
+import PechaSVG from "./components/PechaSVG";
 
 function HomePage() {
   const { user } = useAuth();
@@ -25,7 +26,8 @@ function HomePage() {
   const [newCollectionTitle, setNewCollectionTitle] = useState("");
   const [newCollectionDescription, setNewCollectionDescription] = useState("");
   const { width, height } = useWindowDimensions();
-  const isPortrait = height >= width;
+  const isPortrait = height > width;
+  const pechaWidth = isPortrait ? width - 32 : (width - 48) / 2;
 
   useEffect(() => {
     if (user) {
@@ -74,10 +76,14 @@ function HomePage() {
       .then(() => {
         setCollections([
           ...collections,
-          { id: Math.random().toString(), title: newCollectionTitle, description: newCollectionDescription },
+          {
+            id: Math.random().toString(),
+            title: newCollectionTitle,
+            description: newCollectionDescription,
+          },
         ]);
         setNewCollectionTitle("");
-                setNewCollectionDescription("");
+        setNewCollectionDescription("");
         setModalVisible(false);
       })
       .catch((error) => {
@@ -85,24 +91,30 @@ function HomePage() {
       });
   };
 
-  const renderPechaCard = ({ item }) => (
+  const renderPecha = ({ item }) => (
     <TouchableOpacity
-      style={styles.pechaCard}
+      style={[
+        styles.pechaContainer,
+        isPortrait ? styles.pechaPortrait : styles.pechaLandscape,
+      ]}
       onPress={() => handlePressCollection(item.id)}
     >
-      <PechaCard title={item.title} description={item.description} hexColor={item.hexColor} />
+      <PechaSVG
+        title={item.title}
+        description={item.description}
+        hexColor={item.hexColor}
+        width={pechaWidth}
+      />
     </TouchableOpacity>
   );
-
-  const allWordsPecha = {
+  allWordsPecha = {
     id: "all-words",
     title: "All Words",
-        description: "All words in the dictionary",
+    description: "All words in the dictionary",
     hexColor: "#B31D1D",
   };
-
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.navigate("Login")}
@@ -120,23 +132,17 @@ function HomePage() {
       </View>
       {isPortrait ? (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          {[...collections, allWordsPecha].map((item) => (
-            <TouchableOpacity
-              style={styles.pechaCard}
-              key={item.id}
-              onPress={() => handlePressCollection(item.id)}
-            >
-              <PechaCard title={item.title} description={item.description} hexColor={item.hexColor} />
-            </TouchableOpacity>
-          ))}
+          {[...collections, allWordsPecha].map((item, index) =>
+            renderPecha({ item, index }),
+          )}
         </ScrollView>
       ) : (
         <FlatList
           data={[...collections, allWordsPecha]}
-          renderItem={renderPechaCard}
+          renderItem={renderPecha}
           keyExtractor={(item) => item.id}
           numColumns={2}
-          contentContainerStyle={styles.collectionContainer}
+          contentContainerStyle={styles.flatListContainer}
         />
       )}
       <Modal
@@ -166,22 +172,17 @@ function HomePage() {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  pechaCard: {
-    flex: 1,
-    margin: 10,
-  },
   container: {
     flex: 1,
     backgroundColor: "#FAFAFA",
   },
   header: {
-    padding: 24,
-    marginTop: 22,
+    padding: 16,
     backgroundColor: "#FFFFFF",
     borderBottomWidth: 1,
     borderBottomColor: "#F0F0F2",
@@ -191,28 +192,32 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
-    margin: 10,
     fontWeight: "bold",
   },
-  collectionContainer: {
-    paddingHorizontal: 10,
-  },
   scrollViewContainer: {
-    paddingHorizontal: 10,
-    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingTop: 16,
+  },
+  flatListContainer: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+  },
+  pechaContainer: {
+    marginBottom: 12,
+  },
+  pechaPortrait: {
+    width: "100%",
+  },
+  pechaLandscape: {
+    width: "50%",
+    paddingHorizontal: 8,
   },
   topLeftTextButton: {
-    position: "absolute",
-    top: 12,
-    left: 24,
     padding: 8,
-    marginBottom: 10,
     borderRadius: 5,
-    zIndex: 1,
   },
   topLeftTextButtonText: {
     fontSize: 12,
-    textAlign: "center",
   },
   addButton: {
     backgroundColor: "#B31D1D",
@@ -222,7 +227,7 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: "#FFFFFF",
   },
-  centeredView: {
+  centeredview: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

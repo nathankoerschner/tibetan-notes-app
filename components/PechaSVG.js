@@ -1,11 +1,16 @@
 import * as React from "react";
 import Svg, { Path, G, Rect, Mask, Text, TSpan, Defs } from "react-native-svg";
 
-function PechaCard({ title = "Unnamed", description = "", hexColor = "#0F2497" }) {
+function PechaSVG({
+  title = "Unnamed",
+  description = "",
+  width = 553,
+  hexColor = "#0F2497",
+}) {
   return (
     <Svg
-      width={553}
-      height={187}
+      width={width}
+      height={width * 0.33815552}
       viewBox="0 0 553 187"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +50,7 @@ function PechaCard({ title = "Unnamed", description = "", hexColor = "#0F2497" }
             textAnchor: "middle",
           }}
           fontFamily="Noto Serif Tibetan"
-          fontSize={16}
+          fontSize={width * 0.03}
           fontWeight="bold"
           letterSpacing="0em"
         >
@@ -74,5 +79,4 @@ function PechaCard({ title = "Unnamed", description = "", hexColor = "#0F2497" }
   );
 }
 
-export default PechaCard;
-
+export default PechaSVG;
