@@ -6,7 +6,7 @@
 		"android": "npx expo run:android",
 		"ios": "npx expo run:ios",
 		"web": "npx expo start --web",
-        "build": "eas build --profile development --platform ios",
+        "build": "eas build --profile production --platform ios",
         "submit": "eas submit --profile production --platform ios"
 
 	},
