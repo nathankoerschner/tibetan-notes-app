@@ -5,7 +5,10 @@
 		"start": "expo start --dev-client",
 		"android": "npx expo run:android",
 		"ios": "npx expo run:ios",
-		"web": "npx expo start --web"
+		"web": "npx expo start --web",
+        "build": "eas build --profile development --platform ios",
+        "submit": "eas submit --profile production --platform ios"
+
 	},
 	"dependencies": {
 		"@react-native-firebase/app": "18.7.3",

@@ -3,7 +3,7 @@ module.exports = {
 		icon: "./assets/icon.png",
 		name: "Tibetan Dictionary",
 		slug: "tibetan-notes-app",
-		version: "1.0.3",
+		version: "1.1.0",
 		build: {
 			preview: {
 				distribution: "internal",
