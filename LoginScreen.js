@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     position: "absolute",
-    top: 10,
+    top: 60,
     left: 10,
   },
   logoutButtonText: {
@@ -198,8 +198,8 @@ const styles = StyleSheet.create({
   },
   deleteUserButton: {
     position: "absolute",
-    bottom: 10,
-    left: 10,
+    bottom: 40,
+    left: 16,
   },
   deleteUserButtonText: {
     color: "#B31D1D",
