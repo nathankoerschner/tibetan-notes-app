@@ -127,9 +127,9 @@ const styles = StyleSheet.create({
 
   topLeftTextButton: {
     position: "absolute", // Position it over everything else
-    top: 12, // Distance from the top of the container
+    top: 20, // Distance from the top of the container (increased from 12)
 
-    left: 8, // Distance from the left of the container
+    left: 10, // Distance from the left of the container
     padding: 8, // Padding inside the button
     borderRadius: 5, // Rounded corners
     zIndex: 1, // Make sure it's above other elements
