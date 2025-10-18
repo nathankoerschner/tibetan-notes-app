@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
+import { getApp } from "@react-native-firebase/app";
 
 const AuthContext = createContext();
 
@@ -12,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged((user) => {
+    const subscriber = auth(getApp()).onAuthStateChanged((user) => {
       setUser(user);
       if (initializing) {
         setInitializing(false);
@@ -24,7 +25,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      await auth().signInWithEmailAndPassword(email, password);
+      await auth(getApp()).signInWithEmailAndPassword(email, password);
     } catch (error) {
       throw error;
     }
@@ -32,14 +33,14 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await auth().signOut();
+      await auth(getApp()).signOut();
     } catch (error) {
       throw error;
     }
   };
   const loginAnonymously = async () => {
     try {
-      await auth().signInAnonymously();
+      await auth(getApp()).signInAnonymously();
     } catch (error) {
       console.error(error);
     }
@@ -47,7 +48,7 @@ export const AuthProvider = ({ children }) => {
 
   const createUser = async (email, password) => {
     try {
-      await auth().createUserWithEmailAndPassword(email, password);
+      await auth(getApp()).createUserWithEmailAndPassword(email, password);
     } catch (error) {
       console.error(error);
     }

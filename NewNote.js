@@ -8,6 +8,7 @@ import {
 	ActivityIndicator,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
+import { getApp } from "@react-native-firebase/app";
 import { useAuth } from "./AuthContext";
 import tibetanSort from "./tibetan-sort-js";
 
@@ -28,7 +29,7 @@ function NewNote({ navigation, route }) {
 
 	useEffect(() => {
 		if (user) {
-			const collectionRef = firestore()
+			const collectionRef = firestore(getApp())
 				.collection("Users")
 				.doc(user.uid)
 				.collection("Collections");
@@ -66,7 +67,7 @@ function NewNote({ navigation, route }) {
 		}
 
 		const rootLetter = tibetanSort.determineRootLetter(noteTitle) ?? "*";
-		const collectionRef = firestore()
+		const collectionRef = firestore(getApp())
 			.collection("Users")
 			.doc(user.uid)
 			.collection("Notes");
@@ -91,7 +92,7 @@ function NewNote({ navigation, route }) {
 
 	const deleteNote = () => {
 		if (existingNote) {
-			const collectionRef = firestore()
+			const collectionRef = firestore(getApp())
 				.collection("Users")
 				.doc(user.uid)
 				.collection("Notes");

@@ -5,7 +5,7 @@ from firebase_admin import credentials, firestore
 
 # Initialize Firebase Admin
 cred = credentials.Certificate(
-    "/Users/nathankoerschner/tibetan-notes-app-firebase-adminsdk-o4iho-fcdb720637.json"
+    "/Users/nathankoerschner/Documents/tibetan-notes-app-firebase-adminsdk-o4iho-19f36176da.json"
 )
 firebase_admin.initialize_app(cred)
 

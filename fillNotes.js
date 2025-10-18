@@ -1,4 +1,5 @@
 const firestore = require("@react-native-firebase/firestore");
+const { getApp } = require("@react-native-firebase/app");
 const wordList = `ཀ་ཀུ་སྟ་a river
 ཀ་གཅིག་པ་having one pillar
 ཀ་གཟུ་capital of a pillar
@@ -18971,7 +18972,7 @@ const wordList = `ཀ་ཀུ་སྟ་a river
   .split("\n")
   .map((line) => line.split(/(?<![a-z ])(?=[a-z ])/))
   .forEach((x) =>
-    firestore()
+    firestore(getApp())
       .collection("Users")
       .doc(AXGgorHEUUVYsZPZo0pAezl9ys53)
       .collection("Notes")

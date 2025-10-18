@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
+import { getApp } from "@react-native-firebase/app";
 import { useAuth } from "./AuthContext";
 import tibetanSort from "./tibetan-sort-js";
 import styles from "./styles";
@@ -38,7 +39,7 @@ function LibraryScreen({ navigation, route }) {
 	}, []);
 
 	useEffect(() => {
-		let query = firestore()
+		let query = firestore(getApp())
 			.collection("Users")
 			.doc(user.uid)
 			.collection("Notes");

@@ -89,7 +89,7 @@ export default function LoginScreen({ navigation }) {
         {user ? (
           <>
             <View>
-              <Text>Welcome, {user.email}</Text>
+              <Text style={styles.welcomeText}>Welcome, {user.email}</Text>
 
               <TouchableOpacity
                 style={styles.button}
@@ -190,20 +190,35 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 60,
     left: 10,
+    backgroundColor: "#B31D1D",
+    padding: 8,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
   },
   logoutButtonText: {
-    color: "#B31D1D",
-    fontSize: 16,
+    color: "#FFFFFF",
+    fontSize: 14,
     textAlign: "center",
   },
   deleteUserButton: {
     position: "absolute",
-    bottom: 40,
-    left: 16,
+    top: 60,
+    right: 10,
+    backgroundColor: "#B31D1D",
+    padding: 8,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
   },
   deleteUserButtonText: {
-    color: "#B31D1D",
-    fontSize: 16,
+    color: "#FFFFFF",
+    fontSize: 14,
+    textAlign: "center",
+  },
+  welcomeText: {
+    fontSize: 18,
+    marginBottom: 40,
     textAlign: "center",
   },
 });

@@ -13,6 +13,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
+import { getApp } from "@react-native-firebase/app";
 import { useAuth } from "./AuthContext";
 import { useNavigation } from "@react-navigation/native";
 import PechaSVG from "./components/PechaSVG";
@@ -31,7 +32,7 @@ function HomePage() {
 
   useEffect(() => {
     if (user) {
-      const collectionsRef = firestore()
+      const collectionsRef = firestore(getApp())
         .collection("Users")
         .doc(user.uid)
         .collection("Collections");
@@ -67,7 +68,7 @@ function HomePage() {
       alert("Please enter a title for the collection.");
       return;
     }
-    const collectionsRef = firestore()
+    const collectionsRef = firestore(getApp())
       .collection("Users")
       .doc(user.uid)
       .collection("Collections");
