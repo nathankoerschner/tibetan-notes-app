@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   },
   leftSidebar: {
     backgroundColor: "white", // Gray background
-        paddingLeft: 15,
+    paddingLeft: 15,
     width: "20%", // Adjust width as needed
     justifyContent: "center",
     alignItems: "center",
@@ -127,16 +127,19 @@ const styles = StyleSheet.create({
 
   topLeftTextButton: {
     position: "absolute", // Position it over everything else
-    top: 22, // Distance from the top of the container
-
+    top: 50, // Distance from the top of the container
     left: 8, // Distance from the left of the container
-    padding: 8, // Padding inside the button
-    borderRadius: 5, // Rounded corners
+    width: 70, // Fixed width to fit within left sidebar
+    padding: 6, // Smaller padding to fit better
+    borderRadius: 4, // Slightly smaller border radius
     zIndex: 1, // Make sure it's above other elements
+    backgroundColor: "#B31D1D", // Red background color
+    alignItems: "center", // Center the text
+    justifyContent: "center", // Center the text
   },
   topLeftTextButtonText: {
-    fontSize: 12, // Adjust as needed
-    marginTop: 20,
+    fontSize: 10, // Adjust as needed
+    color: "#FFFFFF", // White text color
   },
   // login screen
 });
