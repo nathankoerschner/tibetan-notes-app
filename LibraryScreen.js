@@ -15,8 +15,6 @@ function LibraryScreen({ navigation, route }) {
 	const [library, setLibrary] = useState([]);
 	const [currentLetter, setCurrentLetter] = useState(null);
 	const { currentCollection } = route.params;
-	console.log("the collection in library", currentCollection);
-
 	const handleViewableItemsChanged = useCallback(({ viewableItems }) => {
 		if (viewableItems.length > 0) {
 			setCurrentLetter({

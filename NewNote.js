@@ -25,7 +25,6 @@ function NewNote({ navigation, route }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [isEditMode, setIsEditMode] = useState(!!existingNote);
 	const { user } = useAuth();
-	console.log("the collection", selectedCollections);
 
 	useEffect(() => {
 		if (user) {
