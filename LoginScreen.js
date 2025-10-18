@@ -95,7 +95,7 @@ export default function LoginScreen({ navigation }) {
                 style={styles.button}
                 onPress={() => navigation.navigate("HomePage")}
               >
-                <Text style={styles.buttonText}>Open Home Page</Text>
+                <Text style={styles.buttonText}>Open Collections</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity
