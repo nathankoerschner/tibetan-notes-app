@@ -20,6 +20,7 @@
 		},
 		"production": {
 			"ios": {
+                "image": "latest",
 				"buildConfiguration": "Release"
 			}
 		}
