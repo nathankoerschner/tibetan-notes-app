@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, FlatList, SafeAreaView } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
 import { getApp } from "@react-native-firebase/app";
@@ -61,7 +61,7 @@ function LibraryScreen({ navigation, route }) {
 	}, [groupNotesByInitialCharacter, user.uid, currentCollection]);
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<View style={styles.topBar}>
 				<TouchableOpacity
 					onPress={() => navigation.navigate("HomePage")}
@@ -70,19 +70,21 @@ function LibraryScreen({ navigation, route }) {
 					<Text style={styles.topLeftTextButtonText}>Collections</Text>
 				</TouchableOpacity>
 			</View>
-			<View style={styles.leftSidebar}>
-				<Scrollbar
-					items={library.map((section) => section.title)}
-					selectedItem={currentLetter?.id}
-					onItemPress={setCurrentLetter}
+			<View style={styles.contentContainer}>
+				<View style={styles.leftSidebar}>
+					<Scrollbar
+						items={library.map((section) => section.title)}
+						selectedItem={currentLetter?.id}
+						onItemPress={setCurrentLetter}
+					/>
+				</View>
+				<ItemsView
+					library={library}
+					navigation={navigation}
+					currentLetter={currentLetter?.index}
+					handleViewableItemsChanged={handleViewableItemsChanged}
 				/>
 			</View>
-			<ItemsView
-				library={library}
-				navigation={navigation}
-				currentLetter={currentLetter?.index}
-				handleViewableItemsChanged={handleViewableItemsChanged}
-			/>
 
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
@@ -96,7 +98,7 @@ function LibraryScreen({ navigation, route }) {
 					<Text style={styles.addButtonText}>+</Text>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 }
 

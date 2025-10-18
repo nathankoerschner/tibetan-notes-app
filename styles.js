@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row", // Align children side by side
+    flexDirection: "column", // Stack children vertically
     flex: 1, // Take full height of the screen
   },
   leftSidebar: {
@@ -127,17 +127,13 @@ const styles = StyleSheet.create({
 
   topBar: {
     width: "100%",
-    height: 60,
     backgroundColor: "#ffffff",
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 15,
+    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: "#f2f2f7",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    zIndex: 10,
   },
   topLeftTextButton: {
     padding: 8,
@@ -150,6 +146,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "600",
     color: "#FFFFFF",
+  },
+  contentContainer: {
+    flex: 1,
+    flexDirection: "row",
   },
   // login screen
 });
