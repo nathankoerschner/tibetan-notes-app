@@ -3,6 +3,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column", // Stack children vertically
     flex: 1, // Take full height of the screen
+    backgroundColor: "#ffffff", // White background for SafeAreaView (status bar area)
+  },
+  innerContainer: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "#f2f2f7", // Gray background for main content
   },
   leftSidebar: {
     backgroundColor: "white", // Gray background

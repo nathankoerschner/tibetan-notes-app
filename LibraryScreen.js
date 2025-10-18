@@ -62,41 +62,43 @@ function LibraryScreen({ navigation, route }) {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<View style={styles.topBar}>
-				<TouchableOpacity
-					onPress={() => navigation.navigate("HomePage")}
-					style={styles.topLeftTextButton}
-				>
-					<Text style={styles.topLeftTextButtonText}>Collections</Text>
-				</TouchableOpacity>
-			</View>
-			<View style={styles.contentContainer}>
-				<View style={styles.leftSidebar}>
-					<Scrollbar
-						items={library.map((section) => section.title)}
-						selectedItem={currentLetter?.id}
-						onItemPress={setCurrentLetter}
+			<View style={styles.innerContainer}>
+				<View style={styles.topBar}>
+					<TouchableOpacity
+						onPress={() => navigation.navigate("HomePage")}
+						style={styles.topLeftTextButton}
+					>
+						<Text style={styles.topLeftTextButtonText}>Collections</Text>
+					</TouchableOpacity>
+				</View>
+				<View style={styles.contentContainer}>
+					<View style={styles.leftSidebar}>
+						<Scrollbar
+							items={library.map((section) => section.title)}
+							selectedItem={currentLetter?.id}
+							onItemPress={setCurrentLetter}
+						/>
+					</View>
+					<ItemsView
+						library={library}
+						navigation={navigation}
+						currentLetter={currentLetter?.index}
+						handleViewableItemsChanged={handleViewableItemsChanged}
 					/>
 				</View>
-				<ItemsView
-					library={library}
-					navigation={navigation}
-					currentLetter={currentLetter?.index}
-					handleViewableItemsChanged={handleViewableItemsChanged}
-				/>
-			</View>
 
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={styles.addButton}
-					onPress={() =>
-						navigation.navigate("Note", {
-							currentCollection: currentCollection,
-						})
-					}
-				>
-					<Text style={styles.addButtonText}>+</Text>
-				</TouchableOpacity>
+				<View style={styles.buttonContainer}>
+					<TouchableOpacity
+						style={styles.addButton}
+						onPress={() =>
+							navigation.navigate("Note", {
+								currentCollection: currentCollection,
+							})
+						}
+					>
+						<Text style={styles.addButtonText}>+</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		</SafeAreaView>
 	);
