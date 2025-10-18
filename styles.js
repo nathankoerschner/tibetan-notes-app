@@ -125,21 +125,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  topBar: {
+    width: "100%",
+    height: 60,
+    backgroundColor: "#ffffff",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f2f2f7",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    zIndex: 10,
+  },
   topLeftTextButton: {
-    position: "absolute", // Position it over everything else
-    top: 50, // Distance from the top of the container
-    left: 8, // Distance from the left of the container
-    width: 70, // Fixed width to fit within left sidebar
-    padding: 6, // Smaller padding to fit better
-    borderRadius: 4, // Slightly smaller border radius
-    zIndex: 1, // Make sure it's above other elements
-    backgroundColor: "#B31D1D", // Red background color
-    alignItems: "center", // Center the text
-    justifyContent: "center", // Center the text
+    padding: 8,
+    borderRadius: 4,
+    backgroundColor: "#B31D1D",
+    alignItems: "center",
+    justifyContent: "center",
   },
   topLeftTextButtonText: {
-    fontSize: 10, // Adjust as needed
-    color: "#FFFFFF", // White text color
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
   // login screen
 });

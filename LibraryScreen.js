@@ -62,12 +62,14 @@ function LibraryScreen({ navigation, route }) {
 
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity
-				onPress={() => navigation.navigate("HomePage")}
-				style={styles.topLeftTextButton}
-			>
-				<Text style={styles.topLeftTextButtonText}>Collections</Text>
-			</TouchableOpacity>
+			<View style={styles.topBar}>
+				<TouchableOpacity
+					onPress={() => navigation.navigate("HomePage")}
+					style={styles.topLeftTextButton}
+				>
+					<Text style={styles.topLeftTextButtonText}>Collections</Text>
+				</TouchableOpacity>
+			</View>
 			<View style={styles.leftSidebar}>
 				<Scrollbar
 					items={library.map((section) => section.title)}
