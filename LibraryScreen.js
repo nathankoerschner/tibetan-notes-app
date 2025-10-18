@@ -70,6 +70,12 @@ function LibraryScreen({ navigation, route }) {
 					>
 						<Text style={styles.topLeftTextButtonText}>Collections</Text>
 					</TouchableOpacity>
+					<TouchableOpacity
+						onPress={() => navigation.navigate("Login")}
+						style={styles.topRightTextButton}
+					>
+						<Text style={styles.topRightTextButtonText}>Settings</Text>
+					</TouchableOpacity>
 				</View>
 				<View style={styles.contentContainer}>
 					<View style={styles.leftSidebar}>

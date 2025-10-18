@@ -119,16 +119,16 @@ function HomePage() {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.navigate("Login")}
-          style={styles.topLeftTextButton}
+          style={styles.settingsButton}
         >
-          <Text style={styles.topLeftTextButtonText}>Settings</Text>
+          <Text style={styles.settingsButtonText}>Settings</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Collections</Text>
         <TouchableOpacity
-          style={styles.addButton}
+          style={styles.addCollectionButton}
           onPress={() => setModalVisible(true)}
         >
-          <Text style={styles.addButtonText}>Add Collection</Text>
+          <Text style={styles.addCollectionButtonText}>Add Collection</Text>
         </TouchableOpacity>
       </View>
       {isPortrait ? (
@@ -213,19 +213,24 @@ const styles = StyleSheet.create({
     width: "50%",
     paddingHorizontal: 8,
   },
-  topLeftTextButton: {
+  settingsButton: {
     padding: 8,
-    borderRadius: 5,
   },
-  topLeftTextButtonText: {
-    fontSize: 12,
+  settingsButtonText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#B31D1D",
   },
-  addButton: {
+  addCollectionButton: {
+    padding: 8,
+    borderRadius: 4,
     backgroundColor: "#B31D1D",
-    padding: 10,
-    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  addButtonText: {
+  addCollectionButtonText: {
+    fontSize: 12,
+    fontWeight: "600",
     color: "#FFFFFF",
   },
   centeredview: {

@@ -21,7 +21,7 @@ function PechaSVG({
           x={4}
           width={545}
           height={179}
-          rx={2}
+          rx={8}
           fill={hexColor}
           shapeRendering="crispEdges"
         />

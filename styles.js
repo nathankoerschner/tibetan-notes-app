@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 15,
     paddingVertical: 12,
     borderBottomWidth: 1,
@@ -152,6 +153,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "600",
     color: "#FFFFFF",
+  },
+  topRightTextButton: {
+    padding: 8,
+  },
+  topRightTextButtonText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#B31D1D",
   },
   contentContainer: {
     flex: 1,
